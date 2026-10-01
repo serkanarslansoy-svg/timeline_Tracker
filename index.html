@@ -1,621 +1,569 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#000000">
-  <title>Martur Italy — Timeline Tracker</title>
+  <meta name="theme-color" content="#faf8ff">
+  <title>Martur Italy — Zaman Çizelgesi</title>
   <link rel="icon" href="logo.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --ink: #1c1b19;
-      --muted: #5e584e;
-      --paper: #efeae1;
-      --card: #fffcf7;
-      --line: #e3dcd0;
-      --gold: #c4a15a;
-      --gold-deep: #7c6230;
-      --black: #000000;
-      --green: #0e6b3c;
-      --red: #b4232c;
-      --colw: 36px;
-      --namew: 320px;
-      --sans: "Barlow", "Segoe UI", Helvetica, Arial, sans-serif;
-      --cond: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+      --surface: #faf8ff;
+      --lowest: #ffffff;
+      --low: #f2f3ff;
+      --container: #eaedff;
+      --high: #e2e7ff;
+      --ink: #131b2e;
+      --muted: #434655;
+      --outline: #c3c6d7;
+      --primary: #004ac6;
+      --primary-c: #2563eb;
+      --on-primary: #ffffff;
+      --primary-fixed: #dbe1ff;
+      --secondary: #006a61;
+      --secondary-c: #86f2e4;
+      --error: #ba1a1a;
+      --shadow: 0 1px 8px rgba(19, 27, 46, 0.06);
+      --sans: "Inter", "Segoe UI", sans-serif;
+      --display: "Plus Jakarta Sans", "Inter", sans-serif;
+      --col: 36px;
+      --tree: 400px;
+      --row: 52px;
     }
-
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     body {
       font-family: var(--sans);
       color: var(--ink);
-      background: var(--paper);
+      background: var(--surface);
       min-height: 100vh;
-      line-height: 1.45;
     }
-    button, select, input { font-family: inherit; }
+    button, input, select { font-family: inherit; }
     button { cursor: pointer; }
-    button:disabled { cursor: not-allowed; opacity: 0.45; }
-    :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-    img { max-width: 100%; }
+    button:disabled { opacity: 0.4; cursor: not-allowed; }
+    :focus-visible { outline: 2px solid var(--primary-c); outline-offset: 2px; }
+    svg.i { width: 16px; height: 16px; display: block; flex: none; }
 
-    .site-header { background: var(--black); color: #f6f3ec; }
-    .header-inner {
-      max-width: 1680px;
-      margin: 0 auto;
-      padding: 16px 22px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px 28px;
-      flex-wrap: wrap;
-    }
-    .brand { display: flex; align-items: center; gap: 20px; min-width: 0; }
-    .logo { height: 46px; width: auto; display: block; }
-    .identity { border-left: 1px solid #2a2a2a; padding-left: 18px; min-width: 0; }
-    .eyebrow {
-      margin: 0;
-      color: var(--gold);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-    .doc-title {
-      margin: 3px 0 0;
-      font-family: var(--cond);
-      font-size: 30px;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-      line-height: 0.95;
-    }
-    .toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .project-select {
-      appearance: none;
-      background: #121212 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23c4a15a' stroke-width='1.6' stroke-linecap='round'/></svg>") no-repeat right 12px center;
-      color: #f6f3ec;
-      border: 1px solid #333;
-      border-radius: 8px;
-      height: 42px;
-      padding: 0 36px 0 12px;
-      font-size: 14px;
-      font-weight: 600;
-      min-width: min(280px, 100%);
-      max-width: 380px;
-    }
-    .flag { display: grid; grid-template-columns: 1fr 1fr 1fr; height: 4px; }
-    .flag span:nth-child(1) { background: #009246; }
-    .flag span:nth-child(2) { background: #ffffff; }
-    .flag span:nth-child(3) { background: #ce2b37; }
-
-    .wrap { max-width: 1680px; margin: 0 auto; padding: 22px 20px 56px; display: flex; flex-direction: column; gap: 16px; }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      height: 42px;
-      padding: 0 14px;
-      border-radius: 8px;
-      border: 1px solid transparent;
-      font-size: 14px;
-      font-weight: 600;
-      background: transparent;
-      color: inherit;
-      white-space: nowrap;
-    }
-    .btn svg { width: 16px; height: 16px; display: block; }
-    .btn-gold { background: var(--gold); color: #1a1408; }
-    .btn-gold:hover { background: #d4b56c; }
-    .btn-ghost { color: #f6f3ec; border-color: #3a3a3a; background: #121212; }
-    .btn-ghost:hover { border-color: #6a6a6a; }
-    .btn-dark { background: #161616; color: #f7f4ee; }
-    .btn-dark:hover { background: #2a2a2a; }
-    .btn-line { background: var(--card); color: var(--ink); border-color: #d9d1c3; }
-    .btn-line:hover { background: #f6f1e6; }
-    .btn-danger { background: var(--card); color: var(--red); border-color: #ead7d4; }
-    .btn-danger:hover { background: #fdf2f2; }
-    .file-btn input { display: none; }
-
-    .band, .card, .stats { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
-    .band {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 16px;
-      padding: 18px 20px;
-      flex-wrap: wrap;
-    }
-    .kicker { margin: 0 0 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
-    .band h2 { margin: 0; font-family: var(--cond); font-size: 34px; font-weight: 600; letter-spacing: 0.01em; line-height: 1; }
-    .meta { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
-    .band-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-
-    .stats { display: grid; grid-template-columns: 0.7fr 0.7fr 1.4fr 0.8fr; }
-    .stat { padding: 14px 18px 16px; border-right: 1px solid var(--line); min-width: 0; }
-    .stat:last-child { border-right: 0; }
-    .stat .label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-    .stat strong {
-      display: block;
-      margin-top: 6px;
-      font-family: var(--cond);
-      font-weight: 600;
-      font-size: 36px;
-      line-height: 1;
-      letter-spacing: 0.01em;
-    }
-    .stat.gate strong { font-family: var(--sans); font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0; }
-
-    .card-h {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 12px 20px;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--line);
-      flex-wrap: wrap;
-    }
-    .card-h h3 { margin: 0; font-family: var(--cond); font-size: 24px; font-weight: 600; letter-spacing: 0.02em; }
-    .card-h p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
-    .legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 12px; font-weight: 600; }
-    .legend i { display: inline-block; width: 18px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
-    .legend .lg-run { background: var(--gold); }
-    .legend .lg-up { background: #efe6d2; box-shadow: inset 0 0 0 1px #d9cbb0; }
-    .legend .lg-done { background: var(--green); }
-    .legend .lg-today { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
-
-    .gantt-scroll { overflow: auto; max-height: min(680px, 72vh); }
-    table.gantt, table.register { border-collapse: separate; border-spacing: 0; }
-    table.gantt { table-layout: fixed; width: calc(var(--namew) + 52 * var(--colw)); }
-    col.namecol { width: var(--namew); }
-    col.weekcol { width: var(--colw); }
-
-    .gantt th, .gantt td { padding: 0; vertical-align: middle; }
-    .gantt thead th {
-      position: sticky;
-      background: #141414;
-      color: #f3efe6;
-      z-index: 3;
-      font-weight: 600;
-    }
-    .gantt thead tr:first-child th { top: 0; height: 32px; }
-    .gantt thead tr:nth-child(2) th { top: 32px; height: 28px; }
-    .gantt th.name, .gantt td.name {
-      position: sticky;
-      left: 0;
-      width: var(--namew);
-      min-width: var(--namew);
-      max-width: var(--namew);
-      z-index: 4;
-      background: var(--card);
-      box-shadow: 1px 0 0 var(--line);
-    }
-    .gantt thead th.name {
-      z-index: 6;
-      background: #141414;
-      text-align: left;
-      padding: 0 14px;
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #cfc6b6;
-    }
-    th.month {
-      font-family: var(--cond);
-      font-size: 15px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      border-left: 1px solid #2e2e2e;
-      text-align: left;
-      padding-left: 8px;
-    }
-    th.wk {
-      font-size: 11px;
-      color: #c8c0b4;
-      border-left: 1px solid #2a2a2a;
-      text-align: center;
-    }
-    th.wk.is-today { color: #fff; background: #3d1518; box-shadow: inset 0 -3px 0 var(--red); }
-    td.name { padding: 8px 14px; }
-    td.name.running { box-shadow: inset 3px 0 0 var(--gold), 1px 0 0 var(--line); }
-    td.name.done { box-shadow: inset 3px 0 0 var(--green), 1px 0 0 var(--line); }
-    td.name.upcoming { box-shadow: inset 3px 0 0 #d9d1c3, 1px 0 0 var(--line); }
-    tr.body:hover td.name { background: #f7f2e8; }
-    tr.body td { box-shadow: inset 0 1px 0 #eee8de; }
-    .phase { display: flex; gap: 10px; align-items: baseline; }
-    .num { flex: none; width: 22px; font-size: 12px; font-weight: 700; color: var(--gold-deep); font-variant-numeric: tabular-nums; }
-    .phase-name {
-      font-size: 13.5px;
-      font-weight: 600;
-      line-height: 1.35;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-    td.lane { position: relative; height: 54px; background: transparent; }
-    .track { position: absolute; inset: 0; }
-    .monthline { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(28, 27, 25, 0.1); pointer-events: none; }
-    .wash { position: absolute; top: 0; bottom: 0; background: rgba(180, 35, 44, 0.06); pointer-events: none; }
-    .needle { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--red); pointer-events: none; z-index: 2; }
-    .bar {
-      position: absolute;
-      top: 50%;
-      height: 22px;
-      transform: translateY(-50%);
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-      overflow: hidden;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.01em;
-      white-space: nowrap;
-      z-index: 1;
-    }
-    .bar.running { background: var(--gold); color: #1a1408; }
-    .bar.upcoming { background: #efe6d2; color: #3a3428; box-shadow: inset 0 0 0 1px #d9cbb0; }
-    .bar.done { background: var(--green); color: #f4fff8; }
-    .bar.short { padding: 0; }
-    .empty {
-      padding: 28px 16px;
-      text-align: center;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .register-scroll { overflow-x: auto; }
-    table.register { width: 100%; min-width: 860px; }
-    .register th {
-      text-align: left;
-      font-size: 11px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 700;
-      padding: 10px 14px;
-      background: #f7f3eb;
-      border-bottom: 1px solid var(--line);
+    .top {
       position: sticky;
       top: 0;
+      z-index: 30;
+      background: rgba(250, 248, 255, 0.92);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
     }
-    .register td { padding: 12px 14px; border-bottom: 1px solid #f0ebe3; vertical-align: middle; font-size: 14px; }
-    .register tr:hover td { background: #fbf8f2; }
-    .sub { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
-    .pill {
+    .top-inner {
+      max-width: 1680px;
+      margin: 0 auto;
+      min-height: 72px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand-row, .tools { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; min-width: 0; }
+    .lockup {
+      background: #000;
+      border-radius: 10px;
+      padding: 6px 10px;
+      display: flex;
+      line-height: 0;
+    }
+    .lockup img { height: 28px; width: auto; display: block; }
+    .rule { width: 1px; height: 22px; background: var(--outline); }
+    .project-select, .search, .field input, .field select {
+      background: var(--low);
+      border: 0;
+      color: var(--ink);
+      border-radius: 999px;
+    }
+    .project-select {
+      height: 38px;
+      padding: 0 14px;
+      font-weight: 600;
+      font-size: 13px;
+      max-width: 280px;
+    }
+    .tabs {
+      display: flex;
+      gap: 2px;
+      background: var(--lowest);
+      padding: 4px;
+      border-radius: 999px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+    .tabs button, .zoom button, .seg button {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      height: 32px;
+      padding: 0 12px;
+    }
+    .tabs button.on, .zoom button.on, .seg button.on {
+      background: var(--primary-c);
+      color: white;
+    }
+    .search {
+      height: 38px;
+      padding: 0 14px;
+      width: min(240px, 100%);
+      font-size: 13px;
+    }
+    .btn {
+      height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 0;
+      font-size: 13px;
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      height: 26px;
-      padding: 0 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-    .pill.running { background: #f8f1de; color: #7a5b1e; }
-    .pill.done { background: #e7f5ec; color: var(--green); }
-    .pill.upcoming { background: #f3f0ea; color: #5c564c; }
-    .row-actions { display: flex; justify-content: flex-end; gap: 2px; }
-    .textbtn {
-      background: transparent;
-      border: 0;
+      background: var(--lowest);
       color: var(--ink);
-      font-size: 13px;
-      font-weight: 700;
-      padding: 8px 8px;
-      border-radius: 6px;
-      min-height: 40px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
     }
-    .textbtn:hover { background: #f6f1e6; color: var(--gold-deep); }
-    .textbtn.danger:hover { background: #fdf2f2; color: var(--red); }
-    .count {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--muted);
-      background: #f3efe6;
-      border-radius: 999px;
-      padding: 4px 8px;
-    }
+    .btn:hover { background: var(--low); }
+    .btn-primary { background: var(--primary-c); color: white; box-shadow: none; }
+    .btn-primary:hover { background: var(--primary); }
+    .btn-quiet { background: transparent; box-shadow: none; color: var(--muted); }
+    .btn-quiet:hover { background: var(--container); color: var(--ink); }
+    .btn-danger { background: transparent; box-shadow: none; color: var(--error); }
 
-    .site-footer {
-      max-width: 1680px;
-      margin: 0 auto;
-      padding: 0 22px 28px;
+    .wrap { max-width: 1680px; margin: 0 auto; padding: 20px 20px 48px; display: flex; flex-direction: column; gap: 16px; }
+    .card {
+      background: var(--lowest);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+    .context {
+      padding: 18px 20px;
       display: flex;
       justify-content: space-between;
-      gap: 12px;
+      gap: 18px;
       flex-wrap: wrap;
-      color: var(--muted);
-      font-size: 12px;
+      align-items: flex-end;
     }
-    .link {
-      background: none;
-      border: 0;
-      padding: 0;
-      color: var(--gold-deep);
+    .mark {
+      width: 42px; height: 42px; border-radius: 12px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+      display: grid; place-items: center;
+      flex: none;
+    }
+    .mark svg { width: 22px; height: 22px; }
+    .title-row { display: flex; gap: 12px; align-items: flex-start; min-width: 0; }
+    h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 24px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      font-weight: 600;
+    }
+    .meta { margin: 4px 0 0; color: var(--muted); font-size: 12px; font-weight: 600; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--outline); display: inline-block; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      height: 28px; padding: 0 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 700;
+      background: rgba(134, 242, 228, 0.45);
+      color: #005049;
+    }
+    .badge.idle { background: var(--container); color: var(--muted); }
+    .badge.done { background: rgba(134, 242, 228, 0.7); color: #005049; }
+    .badge i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .progress-line { display: flex; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+    .trackbar { width: min(280px, 70vw); height: 10px; background: var(--container); border-radius: 999px; overflow: hidden; }
+    .trackbar span { display: block; height: 100%; background: var(--primary-c); border-radius: inherit; }
+    .pct { font-size: 13px; font-weight: 700; }
+    .context-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .zoom, .seg { display: inline-flex; padding: 4px; background: var(--container); border-radius: 999px; }
+
+    .station { display: flex; min-height: 560px; overflow: hidden; }
+    .tree { width: var(--tree); flex: none; display: flex; flex-direction: column; background: var(--lowest); border-right: 1px solid #eef0fb; }
+    .tree-head, .time-head { height: 56px; background: var(--low); }
+    .tree-head {
+      display: grid;
+      grid-template-columns: 1fr 92px 72px;
+      align-items: center;
+      padding: 0 14px;
+      font-size: 11px;
       font-weight: 700;
-      font-size: 12px;
-      text-decoration: underline;
-      text-underline-offset: 2px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .tree-body { overflow: auto; flex: 1; }
+    .row {
+      min-height: var(--row);
+      display: grid;
+      grid-template-columns: 1fr 92px 72px;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px 6px 10px;
+      border-bottom: 1px solid #f4f5fb;
+      cursor: pointer;
+    }
+    .row:hover, .row.on { background: var(--low); }
+    .row-name { display: flex; flex-direction: column; min-width: 0; }
+    .row-name strong {
+      font-size: 13px; font-weight: 600; line-height: 1.3;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .row-name em { font-style: normal; font-size: 11px; color: var(--muted); font-weight: 600; }
+    .when { font-size: 11px; font-weight: 600; color: var(--muted); text-align: center; }
+    .pill {
+      justify-self: end;
+      font-size: 10px; font-weight: 700;
+      padding: 3px 7px; border-radius: 999px; white-space: nowrap;
+    }
+    .pill.running { background: var(--primary-fixed); color: var(--primary); }
+    .pill.done { background: rgba(134, 242, 228, 0.55); color: #005049; }
+    .pill.upcoming { background: var(--container); color: var(--muted); }
+    .quick {
+      padding: 10px;
+      background: var(--low);
+    }
+    .quick input {
+      width: 100%; height: 38px; border: 0; border-radius: 999px;
+      padding: 0 14px; background: white; font-size: 13px;
     }
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 10, 10, 0.56);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 40;
-    }
-    .modal.open { display: flex; }
-    .dialog {
-      width: min(480px, 100%);
-      background: var(--card);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-    }
-    .dialog header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 14px 16px;
-      background: #111;
-      color: #f6f3ec;
-    }
-    .dialog h2 { margin: 0; font-family: var(--cond); font-size: 26px; font-weight: 600; }
-    .iconbtn {
-      width: 40px;
-      height: 40px;
-      border: 0;
-      border-radius: 8px;
-      background: transparent;
-      color: #f6f3ec;
+    .canvas { flex: 1; overflow: auto; min-width: 0; background: var(--surface); position: relative; }
+    .sheet { position: relative; }
+    .time-head { position: sticky; top: 0; z-index: 4; box-shadow: 0 1px 0 rgba(0,0,0,0.06); }
+    .months, .weeks, .lane {
       display: grid;
-      place-items: center;
+      grid-template-columns: repeat(52, var(--col));
     }
-    .iconbtn:hover { background: #2a2a2a; }
-    .iconbtn svg { width: 18px; height: 18px; }
-    .dialog form { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
-    .field { display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
-    .field input {
-      height: 42px;
-      border: 1px solid #ddd6c8;
-      border-radius: 8px;
-      padding: 0 12px;
-      font-size: 15px;
-      font-weight: 500;
-      letter-spacing: 0;
-      text-transform: none;
-      color: var(--ink);
-      background: white;
+    .months { height: 28px; }
+    .weeks { height: 28px; }
+    .month {
+      display: flex; align-items: center; padding-left: 8px;
+      font-family: var(--display); font-size: 13px; font-weight: 600;
+      color: var(--muted); border-left: 1px solid #e1e4f5;
+    }
+    .wk {
+      display: grid; place-items: center;
+      font-size: 10px; font-weight: 600; color: var(--muted);
+      border-left: 1px solid #e7e9f6;
+    }
+    .wk.today { background: rgba(219, 225, 255, 0.85); color: var(--primary); font-weight: 800; }
+    .lane { position: relative; height: var(--row); border-bottom: 1px solid rgba(226, 231, 255, 0.7); }
+    .lane:hover, .lane.on { background: rgba(242, 243, 255, 0.8); }
+    .bar {
+      height: 28px; margin-top: 12px; border-radius: 999px;
+      display: flex; align-items: center; padding: 0 10px;
+      font-size: 11px; font-weight: 700; overflow: hidden; white-space: nowrap;
+      z-index: 1; cursor: pointer; box-shadow: 0 1px 3px rgba(19, 27, 46, 0.08);
+    }
+    .bar.running { background: var(--primary-c); color: white; }
+    .bar.done { background: var(--secondary); color: white; }
+    .bar.upcoming { background: var(--high); color: var(--ink); box-shadow: none; }
+    .needle {
+      position: absolute; top: 56px; bottom: 0; width: 2px; margin-left: -1px;
+      background: repeating-linear-gradient(to bottom, var(--error), var(--error) 4px, transparent 4px, transparent 8px);
+      z-index: 2; pointer-events: none;
+    }
+    .needle b {
+      position: sticky; top: 58px;
+      display: inline-block; transform: translate(-50%, 0);
+      background: var(--error); color: white; border-radius: 999px;
+      font-size: 10px; letter-spacing: 0.04em; padding: 2px 6px;
+    }
+    .empty { padding: 28px 16px; color: var(--muted); font-size: 14px; }
+
+    .table-wrap { overflow: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 760px; }
+    th {
+      text-align: left; font-size: 11px; letter-spacing: 0.06em;
+      color: var(--muted); padding: 12px 14px; background: var(--low); font-weight: 700;
+    }
+    td { padding: 12px 14px; border-top: 1px solid #f0f2fb; font-size: 14px; vertical-align: middle; }
+    tr.data { cursor: pointer; }
+    tr.data:hover td { background: #fafbff; }
+    .sub { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .tiny { border: 0; background: transparent; color: var(--muted); font-weight: 700; font-size: 12px; padding: 6px; border-radius: 999px; }
+    .tiny:hover { background: var(--low); color: var(--primary); }
+    .tiny.danger:hover { color: var(--error); }
+
+    .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 14px; }
+    .col { background: var(--low); border-radius: 14px; padding: 10px; min-height: 240px; }
+    .col h3 { margin: 4px 8px 10px; font-size: 12px; letter-spacing: 0.06em; color: var(--muted); }
+    .ticket {
+      background: white; border-radius: 14px; padding: 12px; margin-bottom: 8px;
+      box-shadow: 0 1px 3px rgba(19, 27, 46, 0.05); cursor: pointer;
+    }
+    .ticket strong { display: block; font-size: 14px; line-height: 1.35; }
+    .ticket span { display: block; margin-top: 6px; color: var(--muted); font-size: 12px; font-weight: 600; }
+
+    .drawer-back {
+      position: fixed; inset: 0; background: rgba(19, 27, 46, 0.28);
+      z-index: 40; display: none;
+    }
+    .drawer-back.open { display: block; }
+    .drawer {
+      position: fixed; top: 0; right: 0; height: 100%; width: min(440px, 100%);
+      background: var(--lowest); z-index: 50;
+      transform: translateX(100%);
+      transition: transform 240ms ease;
+      display: flex; flex-direction: column;
+      box-shadow: -12px 0 40px rgba(19, 27, 46, 0.12);
+    }
+    .drawer.open { transform: none; }
+    .drawer header, .modal header {
+      padding: 18px 18px 14px; background: var(--low);
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .drawer h2, .modal h2 { margin: 0; font-family: var(--display); font-size: 20px; font-weight: 600; }
+    .drawer header p, .modal header p { margin: 2px 0 0; color: var(--muted); font-size: 12px; font-weight: 600; }
+    .x {
+      width: 36px; height: 36px; border: 0; border-radius: 999px; background: transparent; color: var(--muted);
+      display: grid; place-items: center;
+    }
+    .x:hover { background: var(--container); color: var(--ink); }
+    .drawer form, .modal form { padding: 18px; display: flex; flex-direction: column; gap: 14px; overflow: auto; }
+    .field { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 700; color: var(--muted); }
+    .field input, .field select {
+      height: 42px; border-radius: 12px; padding: 0 12px; font-size: 14px; font-weight: 500; color: var(--ink);
     }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .hint { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ink); }
-    .form-error { min-height: 1.2em; margin: 0; color: var(--red); font-size: 13px; font-weight: 600; letter-spacing: 0; text-transform: none; }
-    .form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+    .hint { margin: 0; font-size: 13px; color: var(--ink); font-weight: 500; }
+    .err { margin: 0; min-height: 1.1em; color: var(--error); font-size: 13px; font-weight: 600; }
+    .drawer footer, .modal .actions {
+      margin-top: auto; padding: 14px 18px; background: var(--low);
+      display: flex; justify-content: space-between; gap: 8px;
+    }
+    .modal {
+      position: fixed; inset: 0; background: rgba(19, 27, 46, 0.4);
+      display: none; align-items: center; justify-content: center; padding: 20px; z-index: 60;
+    }
+    .modal.open { display: flex; }
+    .dialog { width: min(460px, 100%); background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 24px 60px rgba(19,27,46,.2); }
 
+    .foot {
+      max-width: 1680px; margin: 0 auto; padding: 0 22px 28px;
+      display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+      color: var(--muted); font-size: 12px; font-weight: 600;
+    }
+    .link { border: 0; background: none; color: var(--primary); font-weight: 700; font-size: 12px; padding: 0; text-decoration: underline; text-underline-offset: 2px; }
     .toast {
-      position: fixed;
-      bottom: 18px;
-      left: 50%;
-      transform: translate(-50%, 8px);
-      background: #161616;
-      color: #f6f3ec;
-      border: 1px solid #333;
-      border-radius: 999px;
-      padding: 10px 16px;
-      font-size: 13px;
-      font-weight: 600;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 160ms ease, transform 160ms ease;
-      z-index: 60;
+      position: fixed; bottom: 16px; left: 50%; transform: translate(-50%, 8px);
+      background: #131b2e; color: white; border-radius: 999px; padding: 10px 14px;
+      font-size: 13px; font-weight: 600; opacity: 0; pointer-events: none; z-index: 70;
+      transition: 160ms ease;
     }
     .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .view { display: none; }
+    .view.on { display: block; }
+    #view-gantt.on { display: block; }
 
-    @media (max-width: 900px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-      .stat:nth-child(2) { border-right: 0; }
-      .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
-      .doc-title { font-size: 26px; }
-      .band h2 { font-size: 28px; }
-      :root { --namew: 196px; }
+    @media (max-width: 980px) {
+      .station { flex-direction: column; max-height: none; }
+      .tree { width: 100%; border-right: 0; border-bottom: 1px solid #eef0fb; }
+      .tree-body { max-height: 320px; }
+      .canvas { min-height: 420px; }
+      .board { grid-template-columns: 1fr; }
+      .tabs button { padding: 0 8px; font-size: 12px; }
     }
     @media (max-width: 640px) {
-      .logo { height: 34px; }
-      .identity { display: none; }
-      .header-inner, .wrap { padding-left: 14px; padding-right: 14px; }
-      .toolbar, .project-select { width: 100%; }
       .grid-2 { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: 1fr; }
-      .stat { border-right: 0; border-bottom: 1px solid var(--line); }
-      .stat:last-child { border-bottom: 0; }
-    }
-    @media print {
-      .toolbar, .band-actions, .row-actions, .site-footer, .modal, .toast { display: none !important; }
-      .gantt-scroll { max-height: none; overflow: visible; }
-      body { background: white; }
-      .site-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .lockup img { height: 22px; }
+      h1 { font-size: 20px; }
+      .wrap { padding-left: 12px; padding-right: 12px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .toast { transition: none; }
+      .drawer, .toast { transition: none; }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand">
-        <img class="logo" src="logo.jpg" width="1500" height="125" alt="Martur Italy">
-        <div class="identity">
-          <p class="eyebrow">Torino plant · Engineering</p>
-          <p class="doc-title">Project development plan</p>
-        </div>
-      </div>
-      <div class="toolbar">
-        <label class="sr" for="projectSelect" style="position:absolute;left:-999px">Project</label>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand-row">
+        <div class="lockup"><img src="logo.jpg" width="1500" height="125" alt="Martur Italy"></div>
+        <span class="rule" aria-hidden="true"></span>
+        <label class="sr" for="projectSelect" style="position:absolute;left:-999px">Proje</label>
         <select id="projectSelect" class="project-select"></select>
-        <button type="button" class="btn btn-gold" id="newProjectBtn">New project</button>
-        <button type="button" class="btn btn-ghost" id="exportBtn">Export</button>
-        <label class="btn btn-ghost file-btn">
-          Import
-          <input type="file" id="importFile" accept="application/json,.json">
-        </label>
+        <nav class="tabs" aria-label="Görünüm">
+          <button type="button" class="on" data-view="gantt">Zaman çizelgesi</button>
+          <button type="button" data-view="list">Görev listesi</button>
+          <button type="button" data-view="board">Pano</button>
+        </nav>
+      </div>
+      <div class="tools">
+        <input id="search" class="search" type="search" placeholder="Faz veya kilometre taşı ara" aria-label="Ara">
+        <div class="zoom" role="group" aria-label="Ölçek">
+          <button type="button" data-zoom="month">Ay</button>
+          <button type="button" class="on" data-zoom="week">Hafta</button>
+          <button type="button" data-zoom="day">Gün</button>
+        </div>
+        <button type="button" class="btn" id="exportBtn">Dışa aktar</button>
+        <label class="btn">İçe aktar<input id="importFile" type="file" accept="application/json,.json" hidden></label>
+        <button type="button" class="btn btn-primary" id="addTaskBtn">+ Yeni faz</button>
       </div>
     </div>
   </header>
-  <div class="flag" aria-hidden="true"><span></span><span></span><span></span></div>
 
   <main class="wrap">
-    <section class="band">
+    <section class="card context">
       <div>
-        <p class="kicker">Active project</p>
-        <h2 id="projectTitle">—</h2>
-        <p class="meta" id="projectMeta"></p>
+        <div class="title-row">
+          <div class="mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 16l4-8 4 6 3-4 5 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div>
+            <h1 id="projectTitle">—</h1>
+            <p class="meta" id="projectMeta"></p>
+          </div>
+          <span class="badge" id="health"><i></i><span>Yolunda</span></span>
+        </div>
+        <div class="progress-line">
+          <div class="trackbar" aria-hidden="true"><span id="barFill" style="width:0%"></span></div>
+          <span class="pct" id="pctLabel">%0 tamam</span>
+          <span class="dot"></span>
+          <span class="pct" id="liveLabel" style="font-weight:600;color:var(--muted)"></span>
+        </div>
       </div>
-      <div class="band-actions">
-        <button type="button" class="btn btn-dark" id="addTaskBtn">Add phase</button>
-        <button type="button" class="btn btn-line" id="editProjectBtn">Edit project</button>
-        <button type="button" class="btn btn-danger" id="deleteProjectBtn">Delete</button>
+      <div class="context-actions">
+        <div class="seg">
+          <button type="button" id="todayBtn">Bugün</button>
+        </div>
+        <button type="button" class="btn" id="editProjectBtn">Projeyi düzenle</button>
+        <button type="button" class="btn" id="newProjectBtn">Yeni proje</button>
+        <button type="button" class="btn btn-danger" id="deleteProjectBtn">Sil</button>
       </div>
     </section>
 
-    <section class="stats" aria-label="Schedule summary">
-      <div class="stat"><span class="label">Phases</span><strong id="statPhases">0</strong></div>
-      <div class="stat"><span class="label">Running now</span><strong id="statActive">0</strong></div>
-      <div class="stat gate"><span class="label">Next gate</span><strong id="statNext">—</strong></div>
-      <div class="stat"><span class="label">Window covered</span><strong id="statCover">0%</strong></div>
+    <section class="card view on" id="view-gantt">
+      <div class="station">
+        <div class="tree">
+          <div class="tree-head"><span>FAZ</span><span style="text-align:center">HAFTA</span><span style="text-align:right">DURUM</span></div>
+          <div class="tree-body" id="treeBody"></div>
+          <form class="quick" id="quickForm">
+            <input id="quickName" placeholder="+ Hızlı faz ekle, Enter" maxlength="160" aria-label="Hızlı faz ekle">
+          </form>
+        </div>
+        <div class="canvas" id="ganttScroll"></div>
+      </div>
     </section>
 
-    <section class="card">
-      <div class="card-h">
-        <div>
-          <h3>Master schedule</h3>
-          <p id="horizonLabel">ISO weeks</p>
-        </div>
-        <div class="legend" aria-hidden="true">
-          <span><i class="lg-run"></i>Running</span>
-          <span><i class="lg-up"></i>Upcoming</span>
-          <span><i class="lg-done"></i>Done</span>
-          <span><i class="lg-today"></i>Today</span>
-        </div>
-      </div>
-      <div class="gantt-scroll" id="ganttScroll"></div>
-    </section>
-
-    <section class="card">
-      <div class="card-h">
-        <div>
-          <h3>Phase register</h3>
-          <p>Order here is the order on the schedule. Move a row to reprioritise.</p>
-        </div>
-        <span class="count" id="taskCount">0 phases</span>
-      </div>
-      <div class="register-scroll">
-        <table class="register">
+    <section class="card view" id="view-list">
+      <div class="table-wrap">
+        <table>
           <thead>
             <tr>
-              <th style="width:48px">#</th>
-              <th>Phase</th>
-              <th>Window</th>
-              <th>Weeks</th>
-              <th>Status</th>
-              <th>Milestones</th>
-              <th style="text-align:right">Actions</th>
+              <th style="width:52px">#</th>
+              <th>Faz</th>
+              <th>Pencere</th>
+              <th>Hafta</th>
+              <th>Durum</th>
+              <th>Kilometre taşları</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="taskBody"></tbody>
         </table>
       </div>
     </section>
+
+    <section class="card view" id="view-board">
+      <div class="board" id="board"></div>
+    </section>
   </main>
 
-  <footer class="site-footer">
-    <span>Martur Fompak International · Torino plant. This schedule stays in this browser until you export it.</span>
-    <button type="button" class="link" id="resetBtn">Restore sample plan</button>
+  <footer class="foot">
+    <span>Martur Fompak International · Torino. Plan bu tarayıcıda durur; çıkmadan yedek alın.</span>
+    <button type="button" class="link" id="resetBtn">Örnek planı geri yükle</button>
   </footer>
 
-  <div class="modal" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
-    <div class="dialog">
-      <header>
-        <h2 id="taskModalTitle">Add phase</h2>
-        <button type="button" class="iconbtn" data-close="taskModal" aria-label="Close">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        </button>
-      </header>
-      <form id="taskForm">
-        <input type="hidden" id="taskId">
-        <label class="field">Phase name
-          <input type="text" id="taskName" required maxlength="160" placeholder="Trim covers development">
+  <div class="drawer-back" id="drawerBack"></div>
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <header>
+      <div>
+        <h2 id="drawerTitle">Faz</h2>
+        <p>Haftalar ISO. 49’dan 4’e geçen bir faz yılı keser.</p>
+      </div>
+      <button type="button" class="x" id="drawerClose" aria-label="Kapat">
+        <svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+    <form id="taskForm">
+      <input type="hidden" id="taskId">
+      <label class="field">Faz adı
+        <input id="taskName" required maxlength="160" placeholder="Trim covers development">
+      </label>
+      <div class="grid-2">
+        <label class="field">Başlangıç haftası
+          <input id="taskStart" type="number" min="1" max="52" required>
         </label>
-        <div class="grid-2">
-          <label class="field">Start week
-            <input type="number" id="taskStart" min="1" max="52" required value="36">
-          </label>
-          <label class="field">End week
-            <input type="number" id="taskEnd" min="1" max="52" required value="40">
-          </label>
-        </div>
-        <p class="hint" id="taskSpan"></p>
-        <label class="field">Milestones
-          <input type="text" id="taskNotes" maxlength="240" placeholder="Comma separated, e.g. PO RM, X1">
+        <label class="field">Bitiş haftası
+          <input id="taskEnd" type="number" min="1" max="52" required>
         </label>
-        <p class="form-error" id="taskError"></p>
-        <div class="form-actions">
-          <button type="button" class="btn btn-line" data-close="taskModal">Cancel</button>
-          <button type="submit" class="btn btn-dark">Save phase</button>
-        </div>
-      </form>
-    </div>
-  </div>
+      </div>
+      <p class="hint" id="taskSpan"></p>
+      <label class="field">Kilometre taşları
+        <input id="taskNotes" maxlength="240" placeholder="Virgülle, örn. PO RM, X1">
+      </label>
+      <p class="err" id="taskError"></p>
+    </form>
+    <footer>
+      <button type="button" class="btn btn-danger" id="drawerDelete">Fazı sil</button>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn" id="drawerCancel">Vazgeç</button>
+        <button type="submit" form="taskForm" class="btn btn-primary">Kaydet</button>
+      </div>
+    </footer>
+  </aside>
 
   <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
     <div class="dialog">
       <header>
-        <h2 id="projectModalTitle">New project</h2>
-        <button type="button" class="iconbtn" data-close="projectModal" aria-label="Close">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <div>
+          <h2 id="projectModalTitle">Yeni proje</h2>
+          <p>Araç, müşteri ve SOP notu.</p>
+        </div>
+        <button type="button" class="x" data-close="projectModal" aria-label="Kapat">
+          <svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </button>
       </header>
       <form id="projectForm">
         <input type="hidden" id="projectEditId">
-        <label class="field">Project name
-          <input type="text" id="projectName" required maxlength="120" placeholder="332 Emporio Armani Macro Dev">
+        <label class="field">Proje adı
+          <input id="projectName" required maxlength="120">
         </label>
-        <label class="field">Vehicle / client
-          <input type="text" id="projectMetaInput" required maxlength="180" placeholder="Pre-DV tests · SOP Sep 2027">
+        <label class="field">Araç / müşteri
+          <input id="projectMetaInput" required maxlength="180">
         </label>
-        <div class="form-actions">
-          <button type="button" class="btn btn-line" data-close="projectModal">Cancel</button>
-          <button type="submit" class="btn btn-dark">Save project</button>
+        <div class="actions">
+          <button type="button" class="btn" data-close="projectModal">Vazgeç</button>
+          <button type="submit" class="btn btn-primary">Kaydet</button>
         </div>
       </form>
     </div>
   </div>
-
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast" role="status"></div>
 
   <script>
     const STORAGE_KEY = "martur_projects";
     const ACTIVE_KEY = "martur_active_project";
-    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    const MONTHS = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
+    const STATUS = { running: "Devam", done: "Tamam", upcoming: "Plan" };
 
     function sampleProjects() {
       return [
         {
           id: "p1",
           name: "332 Emporio Armani Macro Dev",
-          meta: "Pre-DV tests (OT seats) · SOP Sep 2027",
+          meta: "Pre-DV testleri (OT koltuk) · SOP Eyl 2027",
           tasks: [
             { id: "t1", name: "1. Trim covers r.m. orders, procurements, delivery", startWeek: 36, endWeek: 42, milestones: "PO RM, feettek NON" },
             { id: "t2", name: "2. Trim covers development (cut&sew)", startWeek: 38, endWeek: 44, milestones: "evo del" },
@@ -631,7 +579,7 @@
         {
           id: "p2",
           name: "Stellantis MY'27 Front Seats",
-          meta: "Easy Entry program · SOP Jan 2028",
+          meta: "Easy Entry programı · SOP Oca 2028",
           tasks: [
             { id: "t201", name: "1. Concept design & feasibility", startWeek: 1, endWeek: 10, milestones: "Kickoff, DFMEA" },
             { id: "t202", name: "2. Prototype tooling & sampling", startWeek: 11, endWeek: 25, milestones: "T1 samples" },
@@ -646,7 +594,6 @@
       const dow = jan4.getUTCDay() || 7;
       return new Date(Date.UTC(year, 0, 4 - dow + 1 + (week - 1) * 7));
     }
-
     function isoOf(date) {
       const utc = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
       const dow = utc.getUTCDay() || 7;
@@ -656,7 +603,6 @@
       const week = Math.ceil((((utc - yearStart) / 86400000) + 1) / 7);
       return { year: isoYear, week };
     }
-
     function buildHorizon() {
       const out = [];
       const push = (year, week) => {
@@ -664,9 +610,7 @@
         const thursday = new Date(monday);
         thursday.setUTCDate(monday.getUTCDate() + 3);
         out.push({
-          year,
-          week,
-          monday,
+          year, week, monday,
           monthLabel: MONTHS[thursday.getUTCMonth()] + " " + String(thursday.getUTCFullYear()).slice(2)
         });
       };
@@ -674,129 +618,120 @@
       for (let w = 1; w <= 35; w++) push(2027, w);
       return out;
     }
-
     const HORIZON = buildHorizon();
-    const fmt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
-    const fmtLong = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
+    const fmt = new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "short", timeZone: "UTC" });
+    const fmtLong = new Intl.DateTimeFormat("tr-TR", { day: "numeric", month: "short", year: "numeric" });
 
     function clampWeek(n) {
       const x = Math.round(Number(n));
       if (!Number.isFinite(x)) return 1;
       return Math.min(52, Math.max(1, x));
     }
-
     function normalize(list) {
-      if (!Array.isArray(list)) return sampleProjects();
+      if (!Array.isArray(list) || !list.length) return sampleProjects();
       const projects = list.map((p, i) => ({
         id: String(p && p.id || "p_" + i),
-        name: String(p && p.name || "Untitled project").slice(0, 120),
+        name: String(p && p.name || "Adsız proje").slice(0, 120),
         meta: String(p && p.meta || "").slice(0, 180),
         tasks: Array.isArray(p && p.tasks) ? p.tasks.map((t, j) => ({
           id: String(t && t.id || "t_" + i + "_" + j),
-          name: String(t && t.name || "Untitled phase").slice(0, 160),
+          name: String(t && t.name || "Adsız faz").slice(0, 160),
           startWeek: clampWeek(t && t.startWeek),
           endWeek: clampWeek(t && t.endWeek),
           milestones: String(t && t.milestones || "").slice(0, 240)
         })) : []
-      })).filter(p => p.name);
+      }));
       return projects.length ? projects : sampleProjects();
     }
-
     function coverage(task) {
       const a = HORIZON.findIndex(w => w.week === clampWeek(task.startWeek));
       const b = HORIZON.findIndex(w => w.week === clampWeek(task.endWeek));
       if (a < 0 || b < 0) return null;
       const idx = [];
-      if (a <= b) {
-        for (let i = a; i <= b; i++) idx.push(i);
-      } else {
-        // Start sits later on the Sep–Sep board than the end week.
-        // Keep a single forward bar from the start week to the end of the window.
-        for (let i = a; i < HORIZON.length; i++) idx.push(i);
-      }
+      if (a <= b) for (let i = a; i <= b; i++) idx.push(i);
+      else for (let i = a; i < HORIZON.length; i++) idx.push(i);
       const segs = [];
       let s = idx[0], p = idx[0];
       for (let i = 1; i < idx.length; i++) {
         if (idx[i] === p + 1) p = idx[i];
         else { segs.push([s, p]); s = p = idx[i]; }
       }
-      segs.push([s, p]);
+      if (idx.length) segs.push([s, p]);
       return { idx, segs, inverted: a > b };
     }
-
     function segmentEnd(index) {
       const end = new Date(HORIZON[index].monday);
       end.setUTCDate(end.getUTCDate() + 6);
       return end;
     }
-
     function dateRangeText(task) {
       const cov = coverage(task);
       if (!cov) return "";
       return cov.segs.map(([a, b]) => fmt.format(HORIZON[a].monday) + " – " + fmt.format(segmentEnd(b))).join(" + ");
     }
-
     function todayIndex() {
       const iso = isoOf(new Date());
       return HORIZON.findIndex(w => w.year === iso.year && w.week === iso.week);
     }
-
     function statusOf(task, todayIdx) {
       const cov = coverage(task);
       if (!cov || todayIdx < 0) return "upcoming";
       if (cov.idx.includes(todayIdx)) return "running";
       const last = Math.max(...cov.idx);
-      if (todayIdx > last && cov.segs.length === 1) return "done";
-      if (cov.segs.length > 1) {
-        const ends = cov.segs.map(([, b]) => segmentEnd(b).getTime());
-        const today = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-        if (ends.every(e => today > e)) return "done";
-      }
-      if (todayIdx > last) return "done";
-      return "upcoming";
+      return todayIdx > last ? "done" : "upcoming";
     }
-
-    const STATUS_LABEL = { running: "Running", done: "Done", upcoming: "Upcoming" };
+    function monthGroups() {
+      const groups = [];
+      HORIZON.forEach((w, i) => {
+        const last = groups[groups.length - 1];
+        if (!last || last.label !== w.monthLabel) groups.push({ label: w.monthLabel, count: 1, start: i });
+        else last.count += 1;
+      });
+      return groups;
+    }
 
     let projects = [];
     let activeId = "";
-    let lastFocus = null;
+    let view = "gantt";
+    let zoom = "week";
+    let query = "";
     let toastTimer = 0;
+    let syncing = false;
 
     function load() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         projects = raw ? normalize(JSON.parse(raw)) : sampleProjects();
-      } catch {
-        projects = sampleProjects();
-      }
+      } catch { projects = sampleProjects(); }
       const saved = localStorage.getItem(ACTIVE_KEY);
       activeId = projects.some(p => p.id === saved) ? saved : projects[0].id;
     }
-
     function save() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
       localStorage.setItem(ACTIVE_KEY, activeId);
     }
-
-    function current() {
-      return projects.find(p => p.id === activeId) || projects[0];
-    }
-
+    function current() { return projects.find(p => p.id === activeId) || projects[0]; }
     function toast(message) {
       const el = document.getElementById("toast");
       el.textContent = message;
       el.classList.add("show");
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
     }
-
     function el(tag, cls, text) {
       const node = document.createElement(tag);
       if (cls) node.className = cls;
       if (text != null) node.textContent = text;
       return node;
     }
+    function visibleTasks(project) {
+      const q = query.trim().toLocaleLowerCase("tr");
+      if (!q) return project.tasks.map((task, index) => ({ task, index }));
+      return project.tasks.map((task, index) => ({ task, index })).filter(({ task }) =>
+        (task.name + " " + task.milestones).toLocaleLowerCase("tr").includes(q)
+      );
+    }
+    function colWidth() { return zoom === "month" ? 20 : zoom === "day" ? 58 : 36; }
 
     function renderSelect() {
       const select = document.getElementById("projectSelect");
@@ -810,255 +745,237 @@
       select.value = current().id;
     }
 
-    function monthGroups() {
-      const groups = [];
-      HORIZON.forEach((w, i) => {
-        const last = groups[groups.length - 1];
-        if (!last || last.label !== w.monthLabel) groups.push({ label: w.monthLabel, count: 1, start: i });
-        else last.count += 1;
-      });
-      return groups;
-    }
-
-    function renderGantt(project) {
-      const host = document.getElementById("ganttScroll");
-      host.replaceChildren();
+    function renderSummary(project, rows) {
       const todayIdx = todayIndex();
-      const table = document.createElement("table");
-      table.className = "gantt";
-      const colgroup = document.createElement("colgroup");
-      colgroup.appendChild(el("col", "namecol"));
-      for (let i = 0; i < HORIZON.length; i++) colgroup.appendChild(el("col", "weekcol"));
-      table.appendChild(colgroup);
-
-      const thead = document.createElement("thead");
-      const monthRow = document.createElement("tr");
-      const nameHead = el("th", "name", "Phase");
-      nameHead.rowSpan = 2;
-      nameHead.scope = "col";
-      monthRow.appendChild(nameHead);
-      monthGroups().forEach(group => {
-        const th = el("th", "month", group.label);
-        th.colSpan = group.count;
-        th.scope = "colgroup";
-        monthRow.appendChild(th);
+      let done = 0, running = 0;
+      project.tasks.forEach(task => {
+        const s = statusOf(task, todayIdx);
+        if (s === "done") done += 1;
+        if (s === "running") running += 1;
       });
-      const weekRow = document.createElement("tr");
-      HORIZON.forEach((w, i) => {
-        const th = el("th", "wk" + (i === todayIdx ? " is-today" : ""), String(w.week));
-        th.scope = "col";
-        th.title = "Week " + w.week + " · " + fmtLong.format(w.monday);
-        weekRow.appendChild(th);
-      });
-      thead.append(monthRow, weekRow);
-      table.appendChild(thead);
-
-      const tbody = document.createElement("tbody");
-      if (!project.tasks.length) {
-        const tr = document.createElement("tr");
-        const td = el("td", "empty", "No phases yet. Add the first one to build the schedule.");
-        td.colSpan = HORIZON.length + 1;
-        tr.appendChild(td);
-        tbody.appendChild(tr);
-      } else {
-        project.tasks.forEach((task, n) => {
-          const cov = coverage(task);
-          const status = statusOf(task, todayIdx);
-          const tr = el("tr", "body");
-          const name = el("td", "name " + status);
-          const phase = el("div", "phase");
-          phase.appendChild(el("span", "num", String(n + 1).padStart(2, "0")));
-          const label = el("span", "phase-name", task.name);
-          phase.appendChild(label);
-          name.appendChild(phase);
-          name.title = task.name;
-          tr.appendChild(name);
-
-          const lane = el("td", "lane");
-          lane.colSpan = HORIZON.length;
-          const track = el("div", "track");
-          monthGroups().forEach(group => {
-            if (!group.start) return;
-            const line = el("div", "monthline");
-            line.style.left = (group.start / HORIZON.length * 100) + "%";
-            track.appendChild(line);
-          });
-          if (todayIdx >= 0) {
-            const wash = el("div", "wash");
-            wash.style.left = (todayIdx / HORIZON.length * 100) + "%";
-            wash.style.width = (100 / HORIZON.length) + "%";
-            const needle = el("div", "needle");
-            needle.style.left = ((todayIdx + 0.5) / HORIZON.length * 100) + "%";
-            track.append(wash, needle);
-          }
-          if (cov) {
-            cov.segs.forEach(seg => {
-              const span = seg[1] - seg[0] + 1;
-              const bar = el("div", "bar " + status + (span < 3 ? " short" : ""));
-              bar.style.left = (seg[0] / HORIZON.length * 100) + "%";
-              bar.style.width = (span / HORIZON.length * 100) + "%";
-              const note = (task.milestones || "").split(",")[0].trim();
-              if (span >= 4 && note) bar.textContent = note;
-              bar.title = task.name + " · W" + task.startWeek + "–W" + task.endWeek + (task.milestones ? " · " + task.milestones : "");
-              track.appendChild(bar);
-            });
-          }
-          lane.appendChild(track);
-          tr.appendChild(lane);
-          tbody.appendChild(tr);
-        });
-      }
-      table.appendChild(tbody);
-      host.appendChild(table);
-
+      const pct = project.tasks.length ? Math.round((done / project.tasks.length) * 100) : 0;
+      document.getElementById("projectTitle").textContent = project.name;
       const iso = isoOf(new Date());
-      const horizon = document.getElementById("horizonLabel");
-      const start = HORIZON[0], end = HORIZON[HORIZON.length - 1];
-      horizon.textContent = todayIdx >= 0
-        ? "W" + start.week + " " + start.monthLabel + " – W" + end.week + " " + end.monthLabel + "  ·  Today W" + iso.week + ", " + fmtLong.format(new Date())
-        : "W" + start.week + " " + start.monthLabel + " – W" + end.week + " " + end.monthLabel;
+      const meta = document.getElementById("projectMeta");
+      meta.replaceChildren();
+      meta.append(document.createTextNode(project.meta || "Araç notu yok"));
+      meta.append(el("span", "dot"));
+      meta.append(document.createTextNode("Bugün H" + iso.week + " · " + fmtLong.format(new Date())));
+      const health = document.getElementById("health");
+      const label = health.querySelector("span");
+      health.className = "badge" + (running ? "" : done && done === project.tasks.length ? " done" : " idle");
+      label.textContent = running ? "Yolunda" : done && done === project.tasks.length ? "Tamamlandı" : "Planlandı";
+      document.getElementById("barFill").style.width = pct + "%";
+      document.getElementById("pctLabel").textContent = "%" + pct + " tamam";
+      document.getElementById("liveLabel").textContent = running + " devam · " + rows.length + " faz görünür";
+      document.getElementById("deleteProjectBtn").disabled = projects.length <= 1;
     }
 
-    function renderTable(project) {
+    function renderGantt(project, rows) {
+      const host = document.getElementById("ganttScroll");
+      const tree = document.getElementById("treeBody");
+      host.replaceChildren();
+      tree.replaceChildren();
+      document.documentElement.style.setProperty("--col", colWidth() + "px");
+      const todayIdx = todayIndex();
+      if (!rows.length) {
+        tree.appendChild(el("div", "empty", query ? "Aramayla eşleşen faz yok." : "Henüz faz yok. Alttan veya Yeni faz ile ekleyin."));
+        host.appendChild(el("div", "empty", "Çizelge boş."));
+        return;
+      }
+      rows.forEach(({ task, index }) => {
+        const status = statusOf(task, todayIdx);
+        const row = el("div", "row");
+        row.dataset.id = task.id;
+        const name = el("div", "row-name");
+        name.appendChild(el("strong", null, task.name));
+        name.appendChild(el("em", null, task.milestones || "Kilometre taşı yok"));
+        row.append(name, el("div", "when", "H" + task.startWeek + "–" + task.endWeek), el("span", "pill " + status, STATUS[status]));
+        row.addEventListener("click", () => openTask(task));
+        tree.appendChild(row);
+      });
+
+      const sheet = el("div", "sheet");
+      const head = el("div", "time-head");
+      const months = el("div", "months");
+      let cursor = 1;
+      monthGroups().forEach(group => {
+        const cell = el("div", "month", group.label);
+        cell.style.gridColumn = cursor + " / span " + group.count;
+        months.appendChild(cell);
+        cursor += group.count;
+      });
+      const weeks = el("div", "weeks");
+      HORIZON.forEach((w, i) => {
+        const cell = el("div", "wk" + (i === todayIdx ? " today" : ""), zoom === "day" ? String(w.week) : String(w.week));
+        cell.title = "Hafta " + w.week + " · " + fmtLong.format(w.monday);
+        if (zoom === "day") cell.textContent = w.week + " · " + fmt.format(w.monday);
+        weeks.appendChild(cell);
+      });
+      head.append(months, weeks);
+      sheet.appendChild(head);
+
+      rows.forEach(({ task }) => {
+        const status = statusOf(task, todayIdx);
+        const cov = coverage(task);
+        const lane = el("div", "lane");
+        lane.dataset.id = task.id;
+        if (cov) {
+          cov.segs.forEach(seg => {
+            const span = seg[1] - seg[0] + 1;
+            const bar = el("div", "bar " + status);
+            bar.style.gridColumn = (seg[0] + 1) + " / span " + span;
+            const note = (task.milestones || "").split(",")[0].trim();
+            if (span >= (zoom === "month" ? 6 : 3) && note) bar.textContent = note;
+            else if (zoom !== "month" && span >= 2) bar.textContent = "H" + task.startWeek;
+            bar.title = task.name + " · H" + task.startWeek + "–H" + task.endWeek + (task.milestones ? " · " + task.milestones : "");
+            bar.addEventListener("click", () => openTask(task));
+            lane.appendChild(bar);
+          });
+        }
+        lane.addEventListener("click", (e) => { if (e.target === lane) openTask(task); });
+        sheet.appendChild(lane);
+      });
+
+      if (todayIdx >= 0) {
+        const needle = el("div", "needle");
+        needle.style.left = ((todayIdx + 0.5) / HORIZON.length * 100) + "%";
+        needle.appendChild(el("b", null, "BUGÜN"));
+        sheet.appendChild(needle);
+      }
+      host.appendChild(sheet);
+      bindHover();
+    }
+
+    function bindHover() {
+      const map = new Map();
+      document.querySelectorAll(".row, .lane").forEach(node => {
+        const id = node.dataset.id;
+        if (!map.has(id)) map.set(id, []);
+        map.get(id).push(node);
+        node.addEventListener("mouseenter", () => map.get(id).forEach(n => n.classList.add("on")));
+        node.addEventListener("mouseleave", () => map.get(id).forEach(n => n.classList.remove("on")));
+      });
+    }
+
+    function renderList(project, rows) {
       const body = document.getElementById("taskBody");
       body.replaceChildren();
       const todayIdx = todayIndex();
-      document.getElementById("taskCount").textContent = project.tasks.length + (project.tasks.length === 1 ? " phase" : " phases");
-      if (!project.tasks.length) {
+      if (!rows.length) {
         const tr = document.createElement("tr");
-        const td = el("td", "empty", "The register is empty.");
+        const td = el("td", "empty", query ? "Eşleşme yok." : "Liste boş.");
         td.colSpan = 7;
         tr.appendChild(td);
         body.appendChild(tr);
         return;
       }
-      project.tasks.forEach((task, n) => {
-        const cov = coverage(task);
+      rows.forEach(({ task, index }) => {
         const status = statusOf(task, todayIdx);
-        const tr = document.createElement("tr");
-        tr.appendChild(el("td", null, String(n + 1).padStart(2, "0")));
-        const name = el("td");
-        name.appendChild(el("strong", null, task.name));
-        tr.appendChild(name);
-        const windowCell = el("td");
-        windowCell.appendChild(document.createTextNode("W" + task.startWeek + " – W" + task.endWeek));
-        windowCell.appendChild(el("span", "sub", dateRangeText(task)));
-        tr.appendChild(windowCell);
-        tr.appendChild(el("td", null, cov ? String(cov.idx.length) : "—"));
-        const statusCell = el("td");
-        statusCell.appendChild(el("span", "pill " + status, STATUS_LABEL[status]));
-        tr.appendChild(statusCell);
-        const ms = el("td", null, task.milestones || "—");
-        if (!task.milestones) ms.style.color = "#8a847a";
-        tr.appendChild(ms);
-        const actions = el("td");
-        const group = el("div", "row-actions");
-        const mk = (label, cls, fn, disabled) => {
-          const b = el("button", "textbtn" + (cls ? " " + cls : ""), label);
-          b.type = "button";
-          b.disabled = !!disabled;
-          b.addEventListener("click", fn);
-          return b;
-        };
-        group.append(
-          mk("Up", "", () => moveTask(task.id, -1), n === 0),
-          mk("Down", "", () => moveTask(task.id, 1), n === project.tasks.length - 1),
-          mk("Edit", "", () => openTaskModal(task)),
-          mk("Remove", "danger", () => deleteTask(task.id))
+        const cov = coverage(task);
+        const tr = el("tr", "data");
+        tr.append(
+          el("td", null, String(index + 1).padStart(2, "0")),
+          el("td", null, task.name),
+          (() => { const td = el("td"); td.append(document.createTextNode("H" + task.startWeek + " – H" + task.endWeek), el("span", "sub", dateRangeText(task))); return td; })(),
+          el("td", null, cov ? String(cov.idx.length) : "—"),
+          (() => { const td = el("td"); td.appendChild(el("span", "pill " + status, STATUS[status])); return td; })(),
+          el("td", null, task.milestones || "—"),
+          (() => {
+            const td = el("td");
+            const up = el("button", "tiny", "Yukarı");
+            const down = el("button", "tiny", "Aşağı");
+            up.type = down.type = "button";
+            up.disabled = index === 0;
+            down.disabled = index === project.tasks.length - 1;
+            up.addEventListener("click", (e) => { e.stopPropagation(); moveTask(task.id, -1); });
+            down.addEventListener("click", (e) => { e.stopPropagation(); moveTask(task.id, 1); });
+            td.append(up, down);
+            return td;
+          })()
         );
-        actions.appendChild(group);
-        tr.appendChild(actions);
+        tr.addEventListener("click", () => openTask(task));
         body.appendChild(tr);
       });
     }
 
-    function renderSummary(project) {
+    function renderBoard(rows) {
+      const host = document.getElementById("board");
+      host.replaceChildren();
       const todayIdx = todayIndex();
-      const today = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-      let running = 0;
-      const covered = new Set();
-      let next = null;
-      project.tasks.forEach(task => {
-        const status = statusOf(task, todayIdx);
-        if (status === "running") running += 1;
-        const cov = coverage(task);
-        if (!cov) return;
-        cov.idx.forEach(i => covered.add(i));
-        cov.segs.forEach(([, b]) => {
-          const end = segmentEnd(b).getTime();
-          if (end >= today && (!next || end < next.end)) {
-            next = { end, task };
-          }
+      const groups = [
+        ["done", "Tamamlanan"],
+        ["running", "Devam eden"],
+        ["upcoming", "Planlanan"]
+      ];
+      groups.forEach(([key, title]) => {
+        const col = el("div", "col");
+        const items = rows.filter(({ task }) => statusOf(task, todayIdx) === key);
+        col.appendChild(el("h3", null, title + " · " + items.length));
+        if (!items.length) col.appendChild(el("div", "empty", "Boş"));
+        items.forEach(({ task }) => {
+          const card = el("div", "ticket");
+          card.append(el("strong", null, task.name), el("span", null, "H" + task.startWeek + "–H" + task.endWeek + (task.milestones ? " · " + task.milestones : "")));
+          card.addEventListener("click", () => openTask(task));
+          col.appendChild(card);
         });
+        host.appendChild(col);
       });
-      document.getElementById("projectTitle").textContent = project.name;
-      document.getElementById("projectMeta").textContent = project.meta || "No vehicle note yet";
-      document.getElementById("statPhases").textContent = String(project.tasks.length);
-      document.getElementById("statActive").textContent = String(running);
-      const gate = document.getElementById("statNext");
-      if (!next) gate.textContent = "No open gate";
-      else {
-        const first = (next.task.milestones || "").split(",").map(s => s.trim()).filter(Boolean)[0];
-        gate.textContent = first || next.task.name;
-      }
-      document.getElementById("statCover").textContent = Math.round((covered.size / HORIZON.length) * 100) + "%";
-      document.getElementById("deleteProjectBtn").disabled = projects.length <= 1;
     }
 
     function render() {
       const project = current();
       activeId = project.id;
+      const rows = visibleTasks(project);
       renderSelect();
-      renderSummary(project);
-      renderGantt(project);
-      renderTable(project);
+      renderSummary(project, rows);
+      renderGantt(project, rows);
+      renderList(project, rows);
+      renderBoard(rows);
+      document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === "view-" + view));
     }
 
-    function openModal(id) {
-      lastFocus = document.activeElement;
-      document.getElementById(id).classList.add("open");
-      document.body.style.overflow = "hidden";
+    function scrollToToday() {
+      const host = document.getElementById("ganttScroll");
+      const idx = todayIndex();
+      if (!host || idx < 0) return;
+      const x = idx * colWidth() - host.clientWidth * 0.35;
+      host.scrollTo({ left: Math.max(0, x), behavior: "smooth" });
     }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove("open");
-      if (![...document.querySelectorAll(".modal")].some(m => m.classList.contains("open"))) {
-        document.body.style.overflow = "";
-      }
-      if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
-    }
-
-    function openTaskModal(task) {
+    function openTask(task) {
       document.getElementById("taskError").textContent = "";
-      document.getElementById("taskModalTitle").textContent = task ? "Edit phase" : "Add phase";
+      document.getElementById("drawerTitle").textContent = task ? "Fazı düzenle" : "Yeni faz";
       document.getElementById("taskId").value = task ? task.id : "";
       document.getElementById("taskName").value = task ? task.name : "";
-      document.getElementById("taskStart").value = task ? task.startWeek : 36;
-      document.getElementById("taskEnd").value = task ? task.endWeek : 42;
+      document.getElementById("taskStart").value = task ? task.startWeek : (todayIndex() >= 0 ? HORIZON[todayIndex()].week : 36);
+      document.getElementById("taskEnd").value = task ? task.endWeek : clampWeek((todayIndex() >= 0 ? HORIZON[todayIndex()].week : 36) + 4);
       document.getElementById("taskNotes").value = task ? task.milestones : "";
-      updateSpanHint();
-      openModal("taskModal");
+      document.getElementById("drawerDelete").hidden = !task;
+      updateSpan();
+      document.getElementById("drawer").classList.add("open");
+      document.getElementById("drawerBack").classList.add("open");
       document.getElementById("taskName").focus();
     }
-
-    function updateSpanHint() {
+    function closeTask() {
+      document.getElementById("drawer").classList.remove("open");
+      document.getElementById("drawerBack").classList.remove("open");
+    }
+    function updateSpan() {
+      const hint = document.getElementById("taskSpan");
       const start = document.getElementById("taskStart").value;
       const end = document.getElementById("taskEnd").value;
-      const hint = document.getElementById("taskSpan");
-      if (start === "" || end === "") { hint.textContent = "ISO week, 1 to 52. A phase can cross the new year, for example 49 to 4."; return; }
+      if (start === "" || end === "") { hint.textContent = ""; return; }
       const task = { startWeek: clampWeek(start), endWeek: clampWeek(end) };
       const cov = coverage(task);
-      const wrap = cov && cov.inverted ? " · end week is behind the start on this window, bar runs to the end of the plan" : "";
-      hint.textContent = (cov ? cov.idx.length : 0) + " weeks · " + dateRangeText(task) + wrap;
+      hint.textContent = (cov ? cov.idx.length : 0) + " hafta · " + dateRangeText(task) + (cov && cov.inverted ? " · bitiş bu pencerede başlangıçtan önce, bar plan sonuna kadar gider" : "");
     }
-
     function saveTask(event) {
       event.preventDefault();
       const project = current();
       const id = document.getElementById("taskId").value;
       const name = document.getElementById("taskName").value.trim();
-      const error = document.getElementById("taskError");
-      if (!name) { error.textContent = "Give the phase a name."; return; }
+      if (!name) { document.getElementById("taskError").textContent = "Faza bir ad verin."; return; }
       const task = {
         id: id || "t_" + Date.now(),
         name,
@@ -1069,25 +986,22 @@
       if (id) {
         const i = project.tasks.findIndex(t => t.id === id);
         if (i >= 0) project.tasks[i] = task;
-      } else {
-        project.tasks.push(task);
-      }
+      } else project.tasks.push(task);
       save();
-      closeModal("taskModal");
+      closeTask();
       render();
-      toast(id ? "Phase updated" : "Phase added");
+      toast(id ? "Faz güncellendi" : "Faz eklendi");
     }
-
     function deleteTask(id) {
       const project = current();
       const task = project.tasks.find(t => t.id === id);
       if (!task) return;
-      if (!confirm('Remove "' + task.name + '" from this plan?')) return;
+      if (!confirm('"' + task.name + '" silinsin mi?')) return;
       project.tasks = project.tasks.filter(t => t.id !== id);
       save();
+      closeTask();
       render();
     }
-
     function moveTask(id, dir) {
       const project = current();
       const i = project.tasks.findIndex(t => t.id === id);
@@ -1098,16 +1012,15 @@
       save();
       render();
     }
-
-    function openProjectModal(existing) {
-      document.getElementById("projectModalTitle").textContent = existing ? "Edit project" : "New project";
+    function openProject(existing) {
+      document.getElementById("projectModalTitle").textContent = existing ? "Projeyi düzenle" : "Yeni proje";
       document.getElementById("projectEditId").value = existing ? existing.id : "";
       document.getElementById("projectName").value = existing ? existing.name : "";
       document.getElementById("projectMetaInput").value = existing ? existing.meta : "";
-      openModal("projectModal");
+      document.getElementById("projectModal").classList.add("open");
       document.getElementById("projectName").focus();
     }
-
+    function closeProject() { document.getElementById("projectModal").classList.remove("open"); }
     function saveProject(event) {
       event.preventDefault();
       const id = document.getElementById("projectEditId").value;
@@ -1122,36 +1035,31 @@
         activeId = project.id;
       }
       save();
-      closeModal("projectModal");
+      closeProject();
       render();
-      toast(id ? "Project updated" : "Project created");
+      toast(id ? "Proje güncellendi" : "Proje açıldı");
     }
-
     function deleteProject() {
       if (projects.length <= 1) return;
       const project = current();
-      if (!confirm('Delete "' + project.name + '" and its whole schedule?')) return;
+      if (!confirm('"' + project.name + '" ve tüm plan silinsin mi?')) return;
       projects = projects.filter(p => p.id !== project.id);
       activeId = projects[0].id;
       save();
       render();
-      toast("Project deleted");
     }
-
     function exportData() {
       const blob = new Blob([JSON.stringify(projects, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      const stamp = new Date().toISOString().slice(0, 10);
       a.href = url;
-      a.download = "martur-italy-timeline-" + stamp + ".json";
+      a.download = "martur-italy-timeline-" + new Date().toISOString().slice(0, 10) + ".json";
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
-      toast("Backup downloaded");
+      toast("Yedek indirildi");
     }
-
     function importData(event) {
       const file = event.target.files && event.target.files[0];
       event.target.value = "";
@@ -1161,61 +1069,79 @@
         try {
           const parsed = JSON.parse(String(reader.result));
           if (!Array.isArray(parsed) || !parsed.length) throw new Error("empty");
-          if (!confirm("Replace every project in this browser with this backup?")) return;
+          if (!confirm("Bu tarayıcıdaki tüm projeler yedekle değiştirilsin mi?")) return;
           projects = normalize(parsed);
           activeId = projects[0].id;
           save();
           render();
-          toast("Backup imported");
-        } catch {
-          toast("That file is not a valid backup");
-        }
+          toast("Yedek alındı");
+        } catch { toast("Dosya okunamadı"); }
       };
       reader.readAsText(file);
     }
 
-    function resetSample() {
-      if (!confirm("Replace the schedule in this browser with the sample Martur plan?")) return;
-      projects = sampleProjects();
-      activeId = projects[0].id;
-      save();
-      render();
-      toast("Sample plan restored");
-    }
-
     function init() {
       load();
-      document.getElementById("projectSelect").addEventListener("change", (e) => {
-        activeId = e.target.value;
-        save();
+      document.getElementById("projectSelect").addEventListener("change", (e) => { activeId = e.target.value; save(); render(); });
+      document.querySelectorAll("[data-view]").forEach(btn => btn.addEventListener("click", () => {
+        view = btn.dataset.view;
+        document.querySelectorAll("[data-view]").forEach(b => b.classList.toggle("on", b === btn));
         render();
-      });
-      document.getElementById("newProjectBtn").addEventListener("click", () => openProjectModal(null));
-      document.getElementById("editProjectBtn").addEventListener("click", () => openProjectModal(current()));
+      }));
+      document.querySelectorAll("[data-zoom]").forEach(btn => btn.addEventListener("click", () => {
+        zoom = btn.dataset.zoom;
+        document.querySelectorAll("[data-zoom]").forEach(b => b.classList.toggle("on", b === btn));
+        render();
+        scrollToToday();
+      }));
+      document.getElementById("search").addEventListener("input", (e) => { query = e.target.value; render(); });
+      document.getElementById("addTaskBtn").addEventListener("click", () => openTask(null));
+      document.getElementById("newProjectBtn").addEventListener("click", () => openProject(null));
+      document.getElementById("editProjectBtn").addEventListener("click", () => openProject(current()));
       document.getElementById("deleteProjectBtn").addEventListener("click", deleteProject);
-      document.getElementById("addTaskBtn").addEventListener("click", () => openTaskModal(null));
       document.getElementById("exportBtn").addEventListener("click", exportData);
       document.getElementById("importFile").addEventListener("change", importData);
-      document.getElementById("resetBtn").addEventListener("click", resetSample);
+      document.getElementById("todayBtn").addEventListener("click", () => { view = "gantt"; document.querySelectorAll("[data-view]").forEach(b => b.classList.toggle("on", b.dataset.view === "gantt")); render(); scrollToToday(); });
       document.getElementById("taskForm").addEventListener("submit", saveTask);
+      document.getElementById("taskStart").addEventListener("input", updateSpan);
+      document.getElementById("taskEnd").addEventListener("input", updateSpan);
+      document.getElementById("drawerClose").addEventListener("click", closeTask);
+      document.getElementById("drawerCancel").addEventListener("click", closeTask);
+      document.getElementById("drawerBack").addEventListener("click", closeTask);
+      document.getElementById("drawerDelete").addEventListener("click", () => deleteTask(document.getElementById("taskId").value));
       document.getElementById("projectForm").addEventListener("submit", saveProject);
-      document.getElementById("taskStart").addEventListener("input", updateSpanHint);
-      document.getElementById("taskEnd").addEventListener("input", updateSpanHint);
-      document.querySelectorAll("[data-close]").forEach(btn => {
-        btn.addEventListener("click", () => closeModal(btn.getAttribute("data-close")));
+      document.querySelectorAll("[data-close]").forEach(btn => btn.addEventListener("click", closeProject));
+      document.getElementById("projectModal").addEventListener("click", (e) => { if (e.target.id === "projectModal") closeProject(); });
+      document.getElementById("quickForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("quickName").value.trim();
+        if (!name) return;
+        const start = todayIndex() >= 0 ? HORIZON[todayIndex()].week : 36;
+        current().tasks.push({ id: "t_" + Date.now(), name, startWeek: start, endWeek: clampWeek(start + 3), milestones: "" });
+        document.getElementById("quickName").value = "";
+        save();
+        render();
+        toast("Faz eklendi");
       });
-      document.querySelectorAll(".modal").forEach(modal => {
-        modal.addEventListener("click", (e) => {
-          if (e.target === modal) closeModal(modal.id);
-        });
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        if (!confirm("Tarayıcıdaki plan örnek Martur planıyla değiştirilsin mi?")) return;
+        projects = sampleProjects();
+        activeId = projects[0].id;
+        save();
+        render();
+        toast("Örnek plan yüklendi");
       });
       document.addEventListener("keydown", (e) => {
-        if (e.key !== "Escape") return;
-        document.querySelectorAll(".modal.open").forEach(modal => closeModal(modal.id));
+        if (e.key === "Escape") { closeTask(); closeProject(); }
+        if ((e.key === "t" || e.key === "T") && !/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) scrollToToday();
       });
+      const tree = document.getElementById("treeBody");
+      const canvas = document.getElementById("ganttScroll");
+      tree.addEventListener("scroll", () => { if (syncing) return; syncing = true; canvas.scrollTop = tree.scrollTop; syncing = false; });
+      canvas.addEventListener("scroll", () => { if (syncing) return; syncing = true; tree.scrollTop = canvas.scrollTop; syncing = false; });
       render();
+      requestAnimationFrame(scrollToToday);
     }
-
     init();
   </script>
 </body>
