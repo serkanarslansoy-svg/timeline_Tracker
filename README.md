@@ -2,7 +2,8 @@
 
 Engineering schedule for the Torino plant. No install.
 
-Open `index.html`. The Martur Italy mark is embedded in the page.
+Open `index.html`. It runs on its own: copy just that one file to your desktop and
+double-click it. The Martur Italy mark and the icon are embedded in the page.
 
 - Opens on a project overview: every project as a card with its status, window and a mini timeline
 - Pick a project to open its Gantt chart, task list and board
