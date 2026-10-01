@@ -1,557 +1,1222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Martur Italy - Project Development Plan & Timeline Tracker</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>Martur Italy — Timeline Tracker</title>
+  <link rel="icon" href="logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1c1b19;
+      --muted: #5e584e;
+      --paper: #efeae1;
+      --card: #fffcf7;
+      --line: #e3dcd0;
+      --gold: #c4a15a;
+      --gold-deep: #7c6230;
+      --black: #000000;
+      --green: #0e6b3c;
+      --red: #b4232c;
+      --colw: 36px;
+      --namew: 320px;
+      --sans: "Barlow", "Segoe UI", Helvetica, Arial, sans-serif;
+      --cond: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: var(--sans);
+      color: var(--ink);
+      background: var(--paper);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+    button, select, input { font-family: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: 0.45; }
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    img { max-width: 100%; }
+
+    .site-header { background: var(--black); color: #f6f3ec; }
+    .header-inner {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 16px 22px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px 28px;
+      flex-wrap: wrap;
+    }
+    .brand { display: flex; align-items: center; gap: 20px; min-width: 0; }
+    .logo { height: 46px; width: auto; display: block; }
+    .identity { border-left: 1px solid #2a2a2a; padding-left: 18px; min-width: 0; }
+    .eyebrow {
+      margin: 0;
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+    .doc-title {
+      margin: 3px 0 0;
+      font-family: var(--cond);
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      line-height: 0.95;
+    }
+    .toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .project-select {
+      appearance: none;
+      background: #121212 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%23c4a15a' stroke-width='1.6' stroke-linecap='round'/></svg>") no-repeat right 12px center;
+      color: #f6f3ec;
+      border: 1px solid #333;
+      border-radius: 8px;
+      height: 42px;
+      padding: 0 36px 0 12px;
+      font-size: 14px;
+      font-weight: 600;
+      min-width: min(280px, 100%);
+      max-width: 380px;
+    }
+    .flag { display: grid; grid-template-columns: 1fr 1fr 1fr; height: 4px; }
+    .flag span:nth-child(1) { background: #009246; }
+    .flag span:nth-child(2) { background: #ffffff; }
+    .flag span:nth-child(3) { background: #ce2b37; }
+
+    .wrap { max-width: 1680px; margin: 0 auto; padding: 22px 20px 56px; display: flex; flex-direction: column; gap: 16px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 42px;
+      padding: 0 14px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 600;
+      background: transparent;
+      color: inherit;
+      white-space: nowrap;
+    }
+    .btn svg { width: 16px; height: 16px; display: block; }
+    .btn-gold { background: var(--gold); color: #1a1408; }
+    .btn-gold:hover { background: #d4b56c; }
+    .btn-ghost { color: #f6f3ec; border-color: #3a3a3a; background: #121212; }
+    .btn-ghost:hover { border-color: #6a6a6a; }
+    .btn-dark { background: #161616; color: #f7f4ee; }
+    .btn-dark:hover { background: #2a2a2a; }
+    .btn-line { background: var(--card); color: var(--ink); border-color: #d9d1c3; }
+    .btn-line:hover { background: #f6f1e6; }
+    .btn-danger { background: var(--card); color: var(--red); border-color: #ead7d4; }
+    .btn-danger:hover { background: #fdf2f2; }
+    .file-btn input { display: none; }
+
+    .band, .card, .stats { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+    .band {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      padding: 18px 20px;
+      flex-wrap: wrap;
+    }
+    .kicker { margin: 0 0 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); }
+    .band h2 { margin: 0; font-family: var(--cond); font-size: 34px; font-weight: 600; letter-spacing: 0.01em; line-height: 1; }
+    .meta { margin: 6px 0 0; color: var(--muted); font-size: 14px; }
+    .band-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .stats { display: grid; grid-template-columns: 0.7fr 0.7fr 1.4fr 0.8fr; }
+    .stat { padding: 14px 18px 16px; border-right: 1px solid var(--line); min-width: 0; }
+    .stat:last-child { border-right: 0; }
+    .stat .label { display: block; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .stat strong {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--cond);
+      font-weight: 600;
+      font-size: 36px;
+      line-height: 1;
+      letter-spacing: 0.01em;
+    }
+    .stat.gate strong { font-family: var(--sans); font-size: 18px; line-height: 1.3; font-weight: 600; letter-spacing: 0; }
+
+    .card-h {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px 20px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+    .card-h h3 { margin: 0; font-family: var(--cond); font-size: 24px; font-weight: 600; letter-spacing: 0.02em; }
+    .card-h p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+    .legend { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 12px; font-weight: 600; }
+    .legend i { display: inline-block; width: 18px; height: 8px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+    .legend .lg-run { background: var(--gold); }
+    .legend .lg-up { background: #efe6d2; box-shadow: inset 0 0 0 1px #d9cbb0; }
+    .legend .lg-done { background: var(--green); }
+    .legend .lg-today { width: 8px; height: 8px; border-radius: 50%; background: var(--red); }
+
+    .gantt-scroll { overflow: auto; max-height: min(680px, 72vh); }
+    table.gantt, table.register { border-collapse: separate; border-spacing: 0; }
+    table.gantt { table-layout: fixed; width: calc(var(--namew) + 52 * var(--colw)); }
+    col.namecol { width: var(--namew); }
+    col.weekcol { width: var(--colw); }
+
+    .gantt th, .gantt td { padding: 0; vertical-align: middle; }
+    .gantt thead th {
+      position: sticky;
+      background: #141414;
+      color: #f3efe6;
+      z-index: 3;
+      font-weight: 600;
+    }
+    .gantt thead tr:first-child th { top: 0; height: 32px; }
+    .gantt thead tr:nth-child(2) th { top: 32px; height: 28px; }
+    .gantt th.name, .gantt td.name {
+      position: sticky;
+      left: 0;
+      width: var(--namew);
+      min-width: var(--namew);
+      max-width: var(--namew);
+      z-index: 4;
+      background: var(--card);
+      box-shadow: 1px 0 0 var(--line);
+    }
+    .gantt thead th.name {
+      z-index: 6;
+      background: #141414;
+      text-align: left;
+      padding: 0 14px;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #cfc6b6;
+    }
+    th.month {
+      font-family: var(--cond);
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-left: 1px solid #2e2e2e;
+      text-align: left;
+      padding-left: 8px;
+    }
+    th.wk {
+      font-size: 11px;
+      color: #c8c0b4;
+      border-left: 1px solid #2a2a2a;
+      text-align: center;
+    }
+    th.wk.is-today { color: #fff; background: #3d1518; box-shadow: inset 0 -3px 0 var(--red); }
+    td.name { padding: 8px 14px; }
+    td.name.running { box-shadow: inset 3px 0 0 var(--gold), 1px 0 0 var(--line); }
+    td.name.done { box-shadow: inset 3px 0 0 var(--green), 1px 0 0 var(--line); }
+    td.name.upcoming { box-shadow: inset 3px 0 0 #d9d1c3, 1px 0 0 var(--line); }
+    tr.body:hover td.name { background: #f7f2e8; }
+    tr.body td { box-shadow: inset 0 1px 0 #eee8de; }
+    .phase { display: flex; gap: 10px; align-items: baseline; }
+    .num { flex: none; width: 22px; font-size: 12px; font-weight: 700; color: var(--gold-deep); font-variant-numeric: tabular-nums; }
+    .phase-name {
+      font-size: 13.5px;
+      font-weight: 600;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    td.lane { position: relative; height: 54px; background: transparent; }
+    .track { position: absolute; inset: 0; }
+    .monthline { position: absolute; top: 0; bottom: 0; width: 1px; background: rgba(28, 27, 25, 0.1); pointer-events: none; }
+    .wash { position: absolute; top: 0; bottom: 0; background: rgba(180, 35, 44, 0.06); pointer-events: none; }
+    .needle { position: absolute; top: 0; bottom: 0; width: 2px; margin-left: -1px; background: var(--red); pointer-events: none; z-index: 2; }
+    .bar {
+      position: absolute;
+      top: 50%;
+      height: 22px;
+      transform: translateY(-50%);
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      overflow: hidden;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+      z-index: 1;
+    }
+    .bar.running { background: var(--gold); color: #1a1408; }
+    .bar.upcoming { background: #efe6d2; color: #3a3428; box-shadow: inset 0 0 0 1px #d9cbb0; }
+    .bar.done { background: var(--green); color: #f4fff8; }
+    .bar.short { padding: 0; }
+    .empty {
+      padding: 28px 16px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .register-scroll { overflow-x: auto; }
+    table.register { width: 100%; min-width: 860px; }
+    .register th {
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+      padding: 10px 14px;
+      background: #f7f3eb;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+    }
+    .register td { padding: 12px 14px; border-bottom: 1px solid #f0ebe3; vertical-align: middle; font-size: 14px; }
+    .register tr:hover td { background: #fbf8f2; }
+    .sub { display: block; color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 26px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .pill.running { background: #f8f1de; color: #7a5b1e; }
+    .pill.done { background: #e7f5ec; color: var(--green); }
+    .pill.upcoming { background: #f3f0ea; color: #5c564c; }
+    .row-actions { display: flex; justify-content: flex-end; gap: 2px; }
+    .textbtn {
+      background: transparent;
+      border: 0;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 8px;
+      border-radius: 6px;
+      min-height: 40px;
+    }
+    .textbtn:hover { background: #f6f1e6; color: var(--gold-deep); }
+    .textbtn.danger:hover { background: #fdf2f2; color: var(--red); }
+    .count {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      background: #f3efe6;
+      border-radius: 999px;
+      padding: 4px 8px;
+    }
+
+    .site-footer {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: 0 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .link {
+      background: none;
+      border: 0;
+      padding: 0;
+      color: var(--gold-deep);
+      font-weight: 700;
+      font-size: 12px;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.56);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 40;
+    }
+    .modal.open { display: flex; }
+    .dialog {
+      width: min(480px, 100%);
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+    }
+    .dialog header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #111;
+      color: #f6f3ec;
+    }
+    .dialog h2 { margin: 0; font-family: var(--cond); font-size: 26px; font-weight: 600; }
+    .iconbtn {
+      width: 40px;
+      height: 40px;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: #f6f3ec;
+      display: grid;
+      place-items: center;
+    }
+    .iconbtn:hover { background: #2a2a2a; }
+    .iconbtn svg { width: 18px; height: 18px; }
+    .dialog form { padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+    .field { display: flex; flex-direction: column; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+    .field input {
+      height: 42px;
+      border: 1px solid #ddd6c8;
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0;
+      text-transform: none;
+      color: var(--ink);
+      background: white;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .hint { margin: 0; font-size: 13px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--ink); }
+    .form-error { min-height: 1.2em; margin: 0; color: var(--red); font-size: 13px; font-weight: 600; letter-spacing: 0; text-transform: none; }
+    .form-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+    .toast {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translate(-50%, 8px);
+      background: #161616;
+      color: #f6f3ec;
+      border: 1px solid #333;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 160ms ease, transform 160ms ease;
+      z-index: 60;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (max-width: 900px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stat:nth-child(2) { border-right: 0; }
+      .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+      .doc-title { font-size: 26px; }
+      .band h2 { font-size: 28px; }
+      :root { --namew: 196px; }
+    }
+    @media (max-width: 640px) {
+      .logo { height: 34px; }
+      .identity { display: none; }
+      .header-inner, .wrap { padding-left: 14px; padding-right: 14px; }
+      .toolbar, .project-select { width: 100%; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; }
+      .stat { border-right: 0; border-bottom: 1px solid var(--line); }
+      .stat:last-child { border-bottom: 0; }
+    }
+    @media print {
+      .toolbar, .band-actions, .row-actions, .site-footer, .modal, .toast { display: none !important; }
+      .gantt-scroll { max-height: none; overflow: visible; }
+      body { background: white; }
+      .site-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .toast { transition: none; }
+    }
+  </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
-    <!-- Header with Martur Italy Logo -->
-    <header class="bg-slate-900 text-white shadow-md border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4">
-                <!-- Martur Italy Logo Representation / SVG based on image -->
-                <div class="bg-white px-3 py-1.5 rounded shadow flex items-center">
-                    <span class="text-xl font-black tracking-wider" style="color: #b59a57;">MARTUR</span><span class="text-xl font-black tracking-wider text-green-600">I</span><span class="text-xl font-black tracking-wider text-slate-800">T</span><span class="text-xl font-black tracking-wider text-red-600">ALY</span>
-                </div>
-                <div>
-                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-                        Project Development Plan & Timeline Tracker
-                        <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full border border-amber-500/30">Engineering Manager Portal</span>
-                    </h1>
-                    <p class="text-xs text-slate-400">Torino Plant • Multi-Project Milestone & Schedule Management</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-3">
-                <div class="flex items-center bg-slate-800 rounded-lg p-1 border border-slate-700">
-                    <select id="projectSelect" class="bg-transparent text-sm text-white px-3 py-1.5 focus:outline-none cursor-pointer font-medium">
-                        <!-- Populated dynamically -->
-                    </select>
-                </div>
-                <button onclick="openNewProjectModal()" class="bg-amber-600 hover:bg-amber-500 text-white px-3 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-folder-plus"></i> New Project
-                </button>
-                <button onclick="exportData()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 border border-slate-700" title="Export Backup">
-                    <i class="fa-solid fa-download text-slate-400"></i>
-                </button>
-                <label class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-lg text-sm font-medium transition flex items-center gap-1.5 border border-slate-700 cursor-pointer" title="Import Backup">
-                    <i class="fa-solid fa-upload text-slate-400"></i>
-                    <input type="file" id="importFile" onchange="importData(event)" class="hidden" accept=".json">
-                </label>
-            </div>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img class="logo" src="logo.jpg" width="1500" height="125" alt="Martur Italy">
+        <div class="identity">
+          <p class="eyebrow">Torino plant · Engineering</p>
+          <p class="doc-title">Project development plan</p>
         </div>
-    </header>
-
-    <!-- Main Content Container -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 flex flex-col gap-6">
-        
-        <!-- Controls & Summary Bar -->
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="p-3 bg-amber-50 text-amber-600 rounded-lg border border-amber-100">
-                    <i class="fa-solid fa-diagram-project text-xl"></i>
-                </div>
-                <div>
-                    <h2 id="currentProjectTitle" class="text-lg font-bold text-slate-900">Project Title</h2>
-                    <p id="currentProjectMeta" class="text-xs text-slate-500">Milestones & Timeline Gantt Matrix</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-2">
-                <button onclick="openAddTaskModal()" class="bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 shadow-sm">
-                    <i class="fa-solid fa-plus"></i> Add Task / Phase
-                </button>
-                <button onclick="editCurrentProject()" class="bg-white hover:bg-slate-50 text-slate-700 px-3 py-2 rounded-lg text-sm font-medium border border-slate-300 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-pen-to-square"></i> Edit Project
-                </button>
-                <button onclick="deleteCurrentProject()" class="bg-white hover:bg-red-50 text-red-600 px-3 py-2 rounded-lg text-sm font-medium border border-red-200 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Gantt & Timeline Matrix View -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
-            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-calendar-days text-amber-600"></i>
-                    <h3 class="font-bold text-slate-800">Development Timeline & Week Matrix</h3>
-                </div>
-                <div class="text-xs text-slate-500 flex items-center gap-4">
-                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 bg-amber-500 rounded-sm inline-block"></span> Active Phase</span>
-                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 bg-slate-900 rounded-sm inline-block"></span> Milestone Marker</span>
-                </div>
-            </div>
-
-            <!-- Scrollable Gantt Table -->
-            <div class="overflow-x-auto custom-scrollbar">
-                <div id="ganttContainer" class="min-w-[1200px]">
-                    <!-- Rendered via JS -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Task List Management Table -->
-        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-amber-600"></i>
-                    <h3 class="font-bold text-slate-800">Task & Phase Details</h3>
-                </div>
-                <span id="taskCountBadge" class="text-xs bg-slate-200 text-slate-700 px-2.5 py-0.5 rounded-full font-medium">0 Tasks</span>
-            </div>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-sm">
-                    <thead>
-                        <tr class="bg-slate-100 text-slate-600 uppercase text-xs tracking-wider border-b border-slate-200">
-                            <th class="py-3 px-4 font-semibold">#</th>
-                            <th class="py-3 px-4 font-semibold">Phase / Task Name</th>
-                            <th class="py-3 px-4 font-semibold">Start Week</th>
-                            <th class="py-3 px-4 font-semibold">End Week</th>
-                            <th class="py-3 px-4 font-semibold">Milestones / Notes</th>
-                            <th class="py-3 px-4 font-semibold text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="taskTableBody" class="divide-y divide-slate-100">
-                        <!-- Populated dynamically -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
-            Martur Fompak International • Torino Engineering Plant &copy; 2026. All rights reserved.
-        </div>
-    </footer>
-
-    <!-- Modal: Add / Edit Task -->
-    <div id="taskModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-200">
-            <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center">
-                <h3 id="taskModalTitle" class="font-bold text-base">Add New Task</h3>
-                <button onclick="closeTaskModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <form id="taskForm" onsubmit="saveTask(event)" class="p-6 flex flex-col gap-4">
-                <input type="hidden" id="editTaskId">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Task / Phase Name</label>
-                    <input type="text" id="taskNameInput" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="e.g., Trim covers r.m. orders">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Start Week (1-52)</label>
-                        <input type="number" id="taskStartInput" min="1" max="52" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="36">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">End Week (1-52)</label>
-                        <input type="number" id="taskEndInput" min="1" max="52" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="40">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Milestones / Sub-notes (Comma separated)</label>
-                    <input type="text" id="taskMilestonesInput" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="e.g., PO RM, feettek NON">
-                </div>
-                <div class="flex justify-end gap-3 mt-4">
-                    <button type="button" onclick="closeTaskModal()" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-sm font-medium transition shadow-sm">Save Task</button>
-                </div>
-            </form>
-        </div>
+      </div>
+      <div class="toolbar">
+        <label class="sr" for="projectSelect" style="position:absolute;left:-999px">Project</label>
+        <select id="projectSelect" class="project-select"></select>
+        <button type="button" class="btn btn-gold" id="newProjectBtn">New project</button>
+        <button type="button" class="btn btn-ghost" id="exportBtn">Export</button>
+        <label class="btn btn-ghost file-btn">
+          Import
+          <input type="file" id="importFile" accept="application/json,.json">
+        </label>
+      </div>
     </div>
+  </header>
+  <div class="flag" aria-hidden="true"><span></span><span></span><span></span></div>
 
-    <!-- Modal: New / Edit Project -->
-    <div id="projectModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-xl max-w-md w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-200">
-            <div class="px-6 py-4 bg-slate-900 text-white flex justify-between items-center">
-                <h3 id="projectModalTitle" class="font-bold text-base">New Project</h3>
-                <button onclick="closeProjectModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <form id="projectForm" onsubmit="saveProject(event)" class="p-6 flex flex-col gap-4">
-                <input type="hidden" id="editProjectIndex">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Project Name & Code</label>
-                    <input type="text" id="projectNameInput" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="e.g., 332 Emporio Armani Macro Dev">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Vehicle / Client Details</label>
-                    <input type="text" id="projectMetaInput" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none" placeholder="e.g., Pre-DV Tests (OT Seats) • SOP Sep 2027">
-                </div>
-                <div class="flex justify-end gap-3 mt-4">
-                    <button type="button" onclick="closeProjectModal()" class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white rounded-lg text-sm font-medium transition shadow-sm">Save Project</button>
-                </div>
-            </form>
+  <main class="wrap">
+    <section class="band">
+      <div>
+        <p class="kicker">Active project</p>
+        <h2 id="projectTitle">—</h2>
+        <p class="meta" id="projectMeta"></p>
+      </div>
+      <div class="band-actions">
+        <button type="button" class="btn btn-dark" id="addTaskBtn">Add phase</button>
+        <button type="button" class="btn btn-line" id="editProjectBtn">Edit project</button>
+        <button type="button" class="btn btn-danger" id="deleteProjectBtn">Delete</button>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Schedule summary">
+      <div class="stat"><span class="label">Phases</span><strong id="statPhases">0</strong></div>
+      <div class="stat"><span class="label">Running now</span><strong id="statActive">0</strong></div>
+      <div class="stat gate"><span class="label">Next gate</span><strong id="statNext">—</strong></div>
+      <div class="stat"><span class="label">Window covered</span><strong id="statCover">0%</strong></div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div>
+          <h3>Master schedule</h3>
+          <p id="horizonLabel">ISO weeks</p>
         </div>
+        <div class="legend" aria-hidden="true">
+          <span><i class="lg-run"></i>Running</span>
+          <span><i class="lg-up"></i>Upcoming</span>
+          <span><i class="lg-done"></i>Done</span>
+          <span><i class="lg-today"></i>Today</span>
+        </div>
+      </div>
+      <div class="gantt-scroll" id="ganttScroll"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <div>
+          <h3>Phase register</h3>
+          <p>Order here is the order on the schedule. Move a row to reprioritise.</p>
+        </div>
+        <span class="count" id="taskCount">0 phases</span>
+      </div>
+      <div class="register-scroll">
+        <table class="register">
+          <thead>
+            <tr>
+              <th style="width:48px">#</th>
+              <th>Phase</th>
+              <th>Window</th>
+              <th>Weeks</th>
+              <th>Status</th>
+              <th>Milestones</th>
+              <th style="text-align:right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="taskBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <span>Martur Fompak International · Torino plant. This schedule stays in this browser until you export it.</span>
+    <button type="button" class="link" id="resetBtn">Restore sample plan</button>
+  </footer>
+
+  <div class="modal" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+    <div class="dialog">
+      <header>
+        <h2 id="taskModalTitle">Add phase</h2>
+        <button type="button" class="iconbtn" data-close="taskModal" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </header>
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+        <label class="field">Phase name
+          <input type="text" id="taskName" required maxlength="160" placeholder="Trim covers development">
+        </label>
+        <div class="grid-2">
+          <label class="field">Start week
+            <input type="number" id="taskStart" min="1" max="52" required value="36">
+          </label>
+          <label class="field">End week
+            <input type="number" id="taskEnd" min="1" max="52" required value="40">
+          </label>
+        </div>
+        <p class="hint" id="taskSpan"></p>
+        <label class="field">Milestones
+          <input type="text" id="taskNotes" maxlength="240" placeholder="Comma separated, e.g. PO RM, X1">
+        </label>
+        <p class="form-error" id="taskError"></p>
+        <div class="form-actions">
+          <button type="button" class="btn btn-line" data-close="taskModal">Cancel</button>
+          <button type="submit" class="btn btn-dark">Save phase</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <!-- Application JavaScript -->
-    <script>
-        // Initial default data based on Martur Armani Project
-        const defaultProjects = [
-            {
-                id: "p1",
-                name: "332 Emporio Armani Macro Dev",
-                meta: "Pre-DV tests (OT seats) • SOP Sep 2027",
-                tasks: [
-                    { id: "t1", name: "1. Trim covers r.m. orders, procurements, delivery", startWeek: 36, endWeek: 42, milestones: "PO RM, feettek NON" },
-                    { id: "t2", name: "2. Trim covers development (cut&sew)", startWeek: 38, endWeek: 44, milestones: "evo del" },
-                    { id: "t3", name: "3. Trim covers patterns and drw's to tier2", startWeek: 40, endWeek: 46, milestones: "" },
-                    { id: "t4", name: "4. Offers, odm, commercial discussion and agreement", startWeek: 36, endWeek: 41, milestones: "odm activation" },
-                    { id: "t5", name: "5. OT trim covers build (low volume tool)", startWeek: 42, endWeek: 48, milestones: "X1, X2" },
-                    { id: "t6", name: "6. OT seats availability", startWeek: 47, endWeek: 50, milestones: "X3" },
-                    { id: "t7", name: "7. OTOP trim covers build", startWeek: 49, endWeek: 52, milestones: "electrowelding" },
-                    { id: "t8", name: "8. PV tests & PPAP components", startWeek: 2, endWeek: 12, milestones: "PV tests, PPAP" },
-                    { id: "t9", name: "9. Ramp-up & SOP", startWeek: 14, endWeek: 20, milestones: "SOP" }
-                ]
-            },
-            {
-                id: "p2",
-                name: "Stellantis MY'27 Front Seats",
-                meta: "Easy Entry Program • SOP Jan 2028",
-                tasks: [
-                    { id: "t201", name: "1. Concept Design & Feasibility", startWeek: 1, endWeek: 10, milestones: "Kickoff, DFMEA" },
-                    { id: "t202", name: "2. Prototype Tooling & Sampling", startWeek: 11, endWeek: 25, milestones: "T1 Samples" },
-                    { id: "t203", name: "3. Validation Testing & Compliance", startWeek: 26, endWeek: 40, milestones: "R17 / R21 Tests" }
-                ]
-            }
-        ];
+  <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle">
+    <div class="dialog">
+      <header>
+        <h2 id="projectModalTitle">New project</h2>
+        <button type="button" class="iconbtn" data-close="projectModal" aria-label="Close">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </header>
+      <form id="projectForm">
+        <input type="hidden" id="projectEditId">
+        <label class="field">Project name
+          <input type="text" id="projectName" required maxlength="120" placeholder="332 Emporio Armani Macro Dev">
+        </label>
+        <label class="field">Vehicle / client
+          <input type="text" id="projectMetaInput" required maxlength="180" placeholder="Pre-DV tests · SOP Sep 2027">
+        </label>
+        <div class="form-actions">
+          <button type="button" class="btn btn-line" data-close="projectModal">Cancel</button>
+          <button type="submit" class="btn btn-dark">Save project</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-        let projects = JSON.parse(localStorage.getItem('martur_projects')) || defaultProjects;
-        let activeProjectId = projects[0].id;
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-        function saveToStorage() {
-            localStorage.setItem('martur_projects', JSON.stringify(projects));
+  <script>
+    const STORAGE_KEY = "martur_projects";
+    const ACTIVE_KEY = "martur_active_project";
+    const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+    function sampleProjects() {
+      return [
+        {
+          id: "p1",
+          name: "332 Emporio Armani Macro Dev",
+          meta: "Pre-DV tests (OT seats) · SOP Sep 2027",
+          tasks: [
+            { id: "t1", name: "1. Trim covers r.m. orders, procurements, delivery", startWeek: 36, endWeek: 42, milestones: "PO RM, feettek NON" },
+            { id: "t2", name: "2. Trim covers development (cut&sew)", startWeek: 38, endWeek: 44, milestones: "evo del" },
+            { id: "t3", name: "3. Trim covers patterns and drw's to tier2", startWeek: 40, endWeek: 46, milestones: "" },
+            { id: "t4", name: "4. Offers, odm, commercial discussion and agreement", startWeek: 36, endWeek: 41, milestones: "odm activation" },
+            { id: "t5", name: "5. OT trim covers build (low volume tool)", startWeek: 42, endWeek: 48, milestones: "X1, X2" },
+            { id: "t6", name: "6. OT seats availability", startWeek: 47, endWeek: 50, milestones: "X3" },
+            { id: "t7", name: "7. OTOP trim covers build", startWeek: 49, endWeek: 52, milestones: "electrowelding" },
+            { id: "t8", name: "8. PV tests & PPAP components", startWeek: 2, endWeek: 12, milestones: "PV tests, PPAP" },
+            { id: "t9", name: "9. Ramp-up & SOP", startWeek: 14, endWeek: 20, milestones: "SOP" }
+          ]
+        },
+        {
+          id: "p2",
+          name: "Stellantis MY'27 Front Seats",
+          meta: "Easy Entry program · SOP Jan 2028",
+          tasks: [
+            { id: "t201", name: "1. Concept design & feasibility", startWeek: 1, endWeek: 10, milestones: "Kickoff, DFMEA" },
+            { id: "t202", name: "2. Prototype tooling & sampling", startWeek: 11, endWeek: 25, milestones: "T1 samples" },
+            { id: "t203", name: "3. Validation testing & compliance", startWeek: 26, endWeek: 35, milestones: "R17 / R21 tests" }
+          ]
         }
+      ];
+    }
 
-        function getCurrentProject() {
-            return projects.find(p => p.id === activeProjectId) || projects[0];
-        }
+    function mondayUTC(year, week) {
+      const jan4 = new Date(Date.UTC(year, 0, 4));
+      const dow = jan4.getUTCDay() || 7;
+      return new Date(Date.UTC(year, 0, 4 - dow + 1 + (week - 1) * 7));
+    }
 
-        function initApp() {
-            renderProjectDropdown();
-            renderDashboard();
-        }
+    function isoOf(date) {
+      const utc = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+      const dow = utc.getUTCDay() || 7;
+      utc.setUTCDate(utc.getUTCDate() + 4 - dow);
+      const isoYear = utc.getUTCFullYear();
+      const yearStart = new Date(Date.UTC(isoYear, 0, 1));
+      const week = Math.ceil((((utc - yearStart) / 86400000) + 1) / 7);
+      return { year: isoYear, week };
+    }
 
-        function renderProjectDropdown() {
-            const select = document.getElementById('projectSelect');
-            select.innerHTML = '';
-            projects.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.id;
-                opt.textContent = p.name;
-                if (p.id === activeProjectId) opt.selected = true;
-                select.appendChild(opt);
+    function buildHorizon() {
+      const out = [];
+      const push = (year, week) => {
+        const monday = mondayUTC(year, week);
+        const thursday = new Date(monday);
+        thursday.setUTCDate(monday.getUTCDate() + 3);
+        out.push({
+          year,
+          week,
+          monday,
+          monthLabel: MONTHS[thursday.getUTCMonth()] + " " + String(thursday.getUTCFullYear()).slice(2)
+        });
+      };
+      for (let w = 36; w <= 52; w++) push(2026, w);
+      for (let w = 1; w <= 35; w++) push(2027, w);
+      return out;
+    }
+
+    const HORIZON = buildHorizon();
+    const fmt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", timeZone: "UTC" });
+    const fmtLong = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
+
+    function clampWeek(n) {
+      const x = Math.round(Number(n));
+      if (!Number.isFinite(x)) return 1;
+      return Math.min(52, Math.max(1, x));
+    }
+
+    function normalize(list) {
+      if (!Array.isArray(list)) return sampleProjects();
+      const projects = list.map((p, i) => ({
+        id: String(p && p.id || "p_" + i),
+        name: String(p && p.name || "Untitled project").slice(0, 120),
+        meta: String(p && p.meta || "").slice(0, 180),
+        tasks: Array.isArray(p && p.tasks) ? p.tasks.map((t, j) => ({
+          id: String(t && t.id || "t_" + i + "_" + j),
+          name: String(t && t.name || "Untitled phase").slice(0, 160),
+          startWeek: clampWeek(t && t.startWeek),
+          endWeek: clampWeek(t && t.endWeek),
+          milestones: String(t && t.milestones || "").slice(0, 240)
+        })) : []
+      })).filter(p => p.name);
+      return projects.length ? projects : sampleProjects();
+    }
+
+    function coverage(task) {
+      const a = HORIZON.findIndex(w => w.week === clampWeek(task.startWeek));
+      const b = HORIZON.findIndex(w => w.week === clampWeek(task.endWeek));
+      if (a < 0 || b < 0) return null;
+      const idx = [];
+      if (a <= b) {
+        for (let i = a; i <= b; i++) idx.push(i);
+      } else {
+        // Start sits later on the Sep–Sep board than the end week.
+        // Keep a single forward bar from the start week to the end of the window.
+        for (let i = a; i < HORIZON.length; i++) idx.push(i);
+      }
+      const segs = [];
+      let s = idx[0], p = idx[0];
+      for (let i = 1; i < idx.length; i++) {
+        if (idx[i] === p + 1) p = idx[i];
+        else { segs.push([s, p]); s = p = idx[i]; }
+      }
+      segs.push([s, p]);
+      return { idx, segs, inverted: a > b };
+    }
+
+    function segmentEnd(index) {
+      const end = new Date(HORIZON[index].monday);
+      end.setUTCDate(end.getUTCDate() + 6);
+      return end;
+    }
+
+    function dateRangeText(task) {
+      const cov = coverage(task);
+      if (!cov) return "";
+      return cov.segs.map(([a, b]) => fmt.format(HORIZON[a].monday) + " – " + fmt.format(segmentEnd(b))).join(" + ");
+    }
+
+    function todayIndex() {
+      const iso = isoOf(new Date());
+      return HORIZON.findIndex(w => w.year === iso.year && w.week === iso.week);
+    }
+
+    function statusOf(task, todayIdx) {
+      const cov = coverage(task);
+      if (!cov || todayIdx < 0) return "upcoming";
+      if (cov.idx.includes(todayIdx)) return "running";
+      const last = Math.max(...cov.idx);
+      if (todayIdx > last && cov.segs.length === 1) return "done";
+      if (cov.segs.length > 1) {
+        const ends = cov.segs.map(([, b]) => segmentEnd(b).getTime());
+        const today = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+        if (ends.every(e => today > e)) return "done";
+      }
+      if (todayIdx > last) return "done";
+      return "upcoming";
+    }
+
+    const STATUS_LABEL = { running: "Running", done: "Done", upcoming: "Upcoming" };
+
+    let projects = [];
+    let activeId = "";
+    let lastFocus = null;
+    let toastTimer = 0;
+
+    function load() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        projects = raw ? normalize(JSON.parse(raw)) : sampleProjects();
+      } catch {
+        projects = sampleProjects();
+      }
+      const saved = localStorage.getItem(ACTIVE_KEY);
+      activeId = projects.some(p => p.id === saved) ? saved : projects[0].id;
+    }
+
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(projects));
+      localStorage.setItem(ACTIVE_KEY, activeId);
+    }
+
+    function current() {
+      return projects.find(p => p.id === activeId) || projects[0];
+    }
+
+    function toast(message) {
+      const el = document.getElementById("toast");
+      el.textContent = message;
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
+    }
+
+    function el(tag, cls, text) {
+      const node = document.createElement(tag);
+      if (cls) node.className = cls;
+      if (text != null) node.textContent = text;
+      return node;
+    }
+
+    function renderSelect() {
+      const select = document.getElementById("projectSelect");
+      select.replaceChildren();
+      projects.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.id;
+        opt.textContent = p.name;
+        select.appendChild(opt);
+      });
+      select.value = current().id;
+    }
+
+    function monthGroups() {
+      const groups = [];
+      HORIZON.forEach((w, i) => {
+        const last = groups[groups.length - 1];
+        if (!last || last.label !== w.monthLabel) groups.push({ label: w.monthLabel, count: 1, start: i });
+        else last.count += 1;
+      });
+      return groups;
+    }
+
+    function renderGantt(project) {
+      const host = document.getElementById("ganttScroll");
+      host.replaceChildren();
+      const todayIdx = todayIndex();
+      const table = document.createElement("table");
+      table.className = "gantt";
+      const colgroup = document.createElement("colgroup");
+      colgroup.appendChild(el("col", "namecol"));
+      for (let i = 0; i < HORIZON.length; i++) colgroup.appendChild(el("col", "weekcol"));
+      table.appendChild(colgroup);
+
+      const thead = document.createElement("thead");
+      const monthRow = document.createElement("tr");
+      const nameHead = el("th", "name", "Phase");
+      nameHead.rowSpan = 2;
+      nameHead.scope = "col";
+      monthRow.appendChild(nameHead);
+      monthGroups().forEach(group => {
+        const th = el("th", "month", group.label);
+        th.colSpan = group.count;
+        th.scope = "colgroup";
+        monthRow.appendChild(th);
+      });
+      const weekRow = document.createElement("tr");
+      HORIZON.forEach((w, i) => {
+        const th = el("th", "wk" + (i === todayIdx ? " is-today" : ""), String(w.week));
+        th.scope = "col";
+        th.title = "Week " + w.week + " · " + fmtLong.format(w.monday);
+        weekRow.appendChild(th);
+      });
+      thead.append(monthRow, weekRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+      if (!project.tasks.length) {
+        const tr = document.createElement("tr");
+        const td = el("td", "empty", "No phases yet. Add the first one to build the schedule.");
+        td.colSpan = HORIZON.length + 1;
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+      } else {
+        project.tasks.forEach((task, n) => {
+          const cov = coverage(task);
+          const status = statusOf(task, todayIdx);
+          const tr = el("tr", "body");
+          const name = el("td", "name " + status);
+          const phase = el("div", "phase");
+          phase.appendChild(el("span", "num", String(n + 1).padStart(2, "0")));
+          const label = el("span", "phase-name", task.name);
+          phase.appendChild(label);
+          name.appendChild(phase);
+          name.title = task.name;
+          tr.appendChild(name);
+
+          const lane = el("td", "lane");
+          lane.colSpan = HORIZON.length;
+          const track = el("div", "track");
+          monthGroups().forEach(group => {
+            if (!group.start) return;
+            const line = el("div", "monthline");
+            line.style.left = (group.start / HORIZON.length * 100) + "%";
+            track.appendChild(line);
+          });
+          if (todayIdx >= 0) {
+            const wash = el("div", "wash");
+            wash.style.left = (todayIdx / HORIZON.length * 100) + "%";
+            wash.style.width = (100 / HORIZON.length) + "%";
+            const needle = el("div", "needle");
+            needle.style.left = ((todayIdx + 0.5) / HORIZON.length * 100) + "%";
+            track.append(wash, needle);
+          }
+          if (cov) {
+            cov.segs.forEach(seg => {
+              const span = seg[1] - seg[0] + 1;
+              const bar = el("div", "bar " + status + (span < 3 ? " short" : ""));
+              bar.style.left = (seg[0] / HORIZON.length * 100) + "%";
+              bar.style.width = (span / HORIZON.length * 100) + "%";
+              const note = (task.milestones || "").split(",")[0].trim();
+              if (span >= 4 && note) bar.textContent = note;
+              bar.title = task.name + " · W" + task.startWeek + "–W" + task.endWeek + (task.milestones ? " · " + task.milestones : "");
+              track.appendChild(bar);
             });
-            select.onchange = (e) => {
-                activeProjectId = e.target.value;
-                renderDashboard();
-            };
+          }
+          lane.appendChild(track);
+          tr.appendChild(lane);
+          tbody.appendChild(tr);
+        });
+      }
+      table.appendChild(tbody);
+      host.appendChild(table);
+
+      const iso = isoOf(new Date());
+      const horizon = document.getElementById("horizonLabel");
+      const start = HORIZON[0], end = HORIZON[HORIZON.length - 1];
+      horizon.textContent = todayIdx >= 0
+        ? "W" + start.week + " " + start.monthLabel + " – W" + end.week + " " + end.monthLabel + "  ·  Today W" + iso.week + ", " + fmtLong.format(new Date())
+        : "W" + start.week + " " + start.monthLabel + " – W" + end.week + " " + end.monthLabel;
+    }
+
+    function renderTable(project) {
+      const body = document.getElementById("taskBody");
+      body.replaceChildren();
+      const todayIdx = todayIndex();
+      document.getElementById("taskCount").textContent = project.tasks.length + (project.tasks.length === 1 ? " phase" : " phases");
+      if (!project.tasks.length) {
+        const tr = document.createElement("tr");
+        const td = el("td", "empty", "The register is empty.");
+        td.colSpan = 7;
+        tr.appendChild(td);
+        body.appendChild(tr);
+        return;
+      }
+      project.tasks.forEach((task, n) => {
+        const cov = coverage(task);
+        const status = statusOf(task, todayIdx);
+        const tr = document.createElement("tr");
+        tr.appendChild(el("td", null, String(n + 1).padStart(2, "0")));
+        const name = el("td");
+        name.appendChild(el("strong", null, task.name));
+        tr.appendChild(name);
+        const windowCell = el("td");
+        windowCell.appendChild(document.createTextNode("W" + task.startWeek + " – W" + task.endWeek));
+        windowCell.appendChild(el("span", "sub", dateRangeText(task)));
+        tr.appendChild(windowCell);
+        tr.appendChild(el("td", null, cov ? String(cov.idx.length) : "—"));
+        const statusCell = el("td");
+        statusCell.appendChild(el("span", "pill " + status, STATUS_LABEL[status]));
+        tr.appendChild(statusCell);
+        const ms = el("td", null, task.milestones || "—");
+        if (!task.milestones) ms.style.color = "#8a847a";
+        tr.appendChild(ms);
+        const actions = el("td");
+        const group = el("div", "row-actions");
+        const mk = (label, cls, fn, disabled) => {
+          const b = el("button", "textbtn" + (cls ? " " + cls : ""), label);
+          b.type = "button";
+          b.disabled = !!disabled;
+          b.addEventListener("click", fn);
+          return b;
+        };
+        group.append(
+          mk("Up", "", () => moveTask(task.id, -1), n === 0),
+          mk("Down", "", () => moveTask(task.id, 1), n === project.tasks.length - 1),
+          mk("Edit", "", () => openTaskModal(task)),
+          mk("Remove", "danger", () => deleteTask(task.id))
+        );
+        actions.appendChild(group);
+        tr.appendChild(actions);
+        body.appendChild(tr);
+      });
+    }
+
+    function renderSummary(project) {
+      const todayIdx = todayIndex();
+      const today = Date.UTC(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+      let running = 0;
+      const covered = new Set();
+      let next = null;
+      project.tasks.forEach(task => {
+        const status = statusOf(task, todayIdx);
+        if (status === "running") running += 1;
+        const cov = coverage(task);
+        if (!cov) return;
+        cov.idx.forEach(i => covered.add(i));
+        cov.segs.forEach(([, b]) => {
+          const end = segmentEnd(b).getTime();
+          if (end >= today && (!next || end < next.end)) {
+            next = { end, task };
+          }
+        });
+      });
+      document.getElementById("projectTitle").textContent = project.name;
+      document.getElementById("projectMeta").textContent = project.meta || "No vehicle note yet";
+      document.getElementById("statPhases").textContent = String(project.tasks.length);
+      document.getElementById("statActive").textContent = String(running);
+      const gate = document.getElementById("statNext");
+      if (!next) gate.textContent = "No open gate";
+      else {
+        const first = (next.task.milestones || "").split(",").map(s => s.trim()).filter(Boolean)[0];
+        gate.textContent = first || next.task.name;
+      }
+      document.getElementById("statCover").textContent = Math.round((covered.size / HORIZON.length) * 100) + "%";
+      document.getElementById("deleteProjectBtn").disabled = projects.length <= 1;
+    }
+
+    function render() {
+      const project = current();
+      activeId = project.id;
+      renderSelect();
+      renderSummary(project);
+      renderGantt(project);
+      renderTable(project);
+    }
+
+    function openModal(id) {
+      lastFocus = document.activeElement;
+      document.getElementById(id).classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove("open");
+      if (![...document.querySelectorAll(".modal")].some(m => m.classList.contains("open"))) {
+        document.body.style.overflow = "";
+      }
+      if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
+    }
+
+    function openTaskModal(task) {
+      document.getElementById("taskError").textContent = "";
+      document.getElementById("taskModalTitle").textContent = task ? "Edit phase" : "Add phase";
+      document.getElementById("taskId").value = task ? task.id : "";
+      document.getElementById("taskName").value = task ? task.name : "";
+      document.getElementById("taskStart").value = task ? task.startWeek : 36;
+      document.getElementById("taskEnd").value = task ? task.endWeek : 42;
+      document.getElementById("taskNotes").value = task ? task.milestones : "";
+      updateSpanHint();
+      openModal("taskModal");
+      document.getElementById("taskName").focus();
+    }
+
+    function updateSpanHint() {
+      const start = document.getElementById("taskStart").value;
+      const end = document.getElementById("taskEnd").value;
+      const hint = document.getElementById("taskSpan");
+      if (start === "" || end === "") { hint.textContent = "ISO week, 1 to 52. A phase can cross the new year, for example 49 to 4."; return; }
+      const task = { startWeek: clampWeek(start), endWeek: clampWeek(end) };
+      const cov = coverage(task);
+      const wrap = cov && cov.inverted ? " · end week is behind the start on this window, bar runs to the end of the plan" : "";
+      hint.textContent = (cov ? cov.idx.length : 0) + " weeks · " + dateRangeText(task) + wrap;
+    }
+
+    function saveTask(event) {
+      event.preventDefault();
+      const project = current();
+      const id = document.getElementById("taskId").value;
+      const name = document.getElementById("taskName").value.trim();
+      const error = document.getElementById("taskError");
+      if (!name) { error.textContent = "Give the phase a name."; return; }
+      const task = {
+        id: id || "t_" + Date.now(),
+        name,
+        startWeek: clampWeek(document.getElementById("taskStart").value),
+        endWeek: clampWeek(document.getElementById("taskEnd").value),
+        milestones: document.getElementById("taskNotes").value.trim()
+      };
+      if (id) {
+        const i = project.tasks.findIndex(t => t.id === id);
+        if (i >= 0) project.tasks[i] = task;
+      } else {
+        project.tasks.push(task);
+      }
+      save();
+      closeModal("taskModal");
+      render();
+      toast(id ? "Phase updated" : "Phase added");
+    }
+
+    function deleteTask(id) {
+      const project = current();
+      const task = project.tasks.find(t => t.id === id);
+      if (!task) return;
+      if (!confirm('Remove "' + task.name + '" from this plan?')) return;
+      project.tasks = project.tasks.filter(t => t.id !== id);
+      save();
+      render();
+    }
+
+    function moveTask(id, dir) {
+      const project = current();
+      const i = project.tasks.findIndex(t => t.id === id);
+      const j = i + dir;
+      if (i < 0 || j < 0 || j >= project.tasks.length) return;
+      const [task] = project.tasks.splice(i, 1);
+      project.tasks.splice(j, 0, task);
+      save();
+      render();
+    }
+
+    function openProjectModal(existing) {
+      document.getElementById("projectModalTitle").textContent = existing ? "Edit project" : "New project";
+      document.getElementById("projectEditId").value = existing ? existing.id : "";
+      document.getElementById("projectName").value = existing ? existing.name : "";
+      document.getElementById("projectMetaInput").value = existing ? existing.meta : "";
+      openModal("projectModal");
+      document.getElementById("projectName").focus();
+    }
+
+    function saveProject(event) {
+      event.preventDefault();
+      const id = document.getElementById("projectEditId").value;
+      const name = document.getElementById("projectName").value.trim();
+      const meta = document.getElementById("projectMetaInput").value.trim();
+      if (id) {
+        const project = projects.find(p => p.id === id);
+        if (project) { project.name = name; project.meta = meta; }
+      } else {
+        const project = { id: "p_" + Date.now(), name, meta, tasks: [] };
+        projects.push(project);
+        activeId = project.id;
+      }
+      save();
+      closeModal("projectModal");
+      render();
+      toast(id ? "Project updated" : "Project created");
+    }
+
+    function deleteProject() {
+      if (projects.length <= 1) return;
+      const project = current();
+      if (!confirm('Delete "' + project.name + '" and its whole schedule?')) return;
+      projects = projects.filter(p => p.id !== project.id);
+      activeId = projects[0].id;
+      save();
+      render();
+      toast("Project deleted");
+    }
+
+    function exportData() {
+      const blob = new Blob([JSON.stringify(projects, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      const stamp = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = "martur-italy-timeline-" + stamp + ".json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast("Backup downloaded");
+    }
+
+    function importData(event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = "";
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result));
+          if (!Array.isArray(parsed) || !parsed.length) throw new Error("empty");
+          if (!confirm("Replace every project in this browser with this backup?")) return;
+          projects = normalize(parsed);
+          activeId = projects[0].id;
+          save();
+          render();
+          toast("Backup imported");
+        } catch {
+          toast("That file is not a valid backup");
         }
+      };
+      reader.readAsText(file);
+    }
 
-        function renderDashboard() {
-            const project = getCurrentProject();
-            document.getElementById('currentProjectTitle').textContent = project.name;
-            document.getElementById('currentProjectMeta').textContent = project.meta;
-            document.getElementById('taskCountBadge').textContent = `${project.tasks.length} Tasks`;
+    function resetSample() {
+      if (!confirm("Replace the schedule in this browser with the sample Martur plan?")) return;
+      projects = sampleProjects();
+      activeId = projects[0].id;
+      save();
+      render();
+      toast("Sample plan restored");
+    }
 
-            renderGanttMatrix(project);
-            renderTaskTable(project);
-        }
+    function init() {
+      load();
+      document.getElementById("projectSelect").addEventListener("change", (e) => {
+        activeId = e.target.value;
+        save();
+        render();
+      });
+      document.getElementById("newProjectBtn").addEventListener("click", () => openProjectModal(null));
+      document.getElementById("editProjectBtn").addEventListener("click", () => openProjectModal(current()));
+      document.getElementById("deleteProjectBtn").addEventListener("click", deleteProject);
+      document.getElementById("addTaskBtn").addEventListener("click", () => openTaskModal(null));
+      document.getElementById("exportBtn").addEventListener("click", exportData);
+      document.getElementById("importFile").addEventListener("change", importData);
+      document.getElementById("resetBtn").addEventListener("click", resetSample);
+      document.getElementById("taskForm").addEventListener("submit", saveTask);
+      document.getElementById("projectForm").addEventListener("submit", saveProject);
+      document.getElementById("taskStart").addEventListener("input", updateSpanHint);
+      document.getElementById("taskEnd").addEventListener("input", updateSpanHint);
+      document.querySelectorAll("[data-close]").forEach(btn => {
+        btn.addEventListener("click", () => closeModal(btn.getAttribute("data-close")));
+      });
+      document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeModal(modal.id);
+        });
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        document.querySelectorAll(".modal.open").forEach(modal => closeModal(modal.id));
+      });
+      render();
+    }
 
-        function renderGanttMatrix(project) {
-            const container = document.getElementById('ganttContainer');
-            
-            // Months mapping roughly across 52 weeks
-            const months = [
-                { name: 'Sep 26', weeks: [36,37,38,39] },
-                { name: 'Oct 26', weeks: [40,41,42,43] },
-                { name: 'Nov 26', weeks: [44,45,46,47] },
-                { name: 'Dec 26', weeks: [48,49,50,51,52] },
-                { name: 'Jan 27', weeks: [1,2,3,4] },
-                { name: 'Feb 27', weeks: [5,6,7,8] },
-                { name: 'Mar 27', weeks: [9,10,11,13] },
-                { name: 'Apr 27', weeks: [14,15,16,17] },
-                { name: 'May 27', weeks: [18,19,20,21] },
-                { name: 'Jun 27', weeks: [22,23,24,25] },
-                { name: 'Jul 27', weeks: [26,27,28,29] },
-                { name: 'Aug 27', weeks: [30,31,32,33,34,35] }
-            ];
-
-            let html = `
-                <table class="w-full border-collapse text-xs">
-                    <thead>
-                        <tr class="bg-slate-900 text-white">
-                            <th class="py-2.5 px-4 text-left font-semibold border-r border-slate-800 w-80 sticky left-0 bg-slate-900 z-10">Task / Phase Description</th>
-            `;
-
-            // Render Months Header
-            months.forEach(m => {
-                html += `<th colspan="${m.weeks.length}" class="py-2.5 px-2 text-center border-r border-slate-800 font-semibold bg-slate-800/80">${m.name}</th>`;
-            });
-            html += `</tr><tr class="bg-slate-800 text-slate-300 border-b border-slate-200">
-                <th class="py-1.5 px-4 text-left border-r border-slate-700 sticky left-0 bg-slate-800 z-10 text-[11px]">Week Numbers</th>`;
-
-            // Render Week numbers header (36 to 35 continuous)
-            let allWeeks = [];
-            months.forEach(m => {
-                m.weeks.forEach(w => {
-                    allWeeks.push(w);
-                    html += `<th class="py-1.5 px-1 text-center border-r border-slate-700 w-8 text-[11px]">${w}</th>`;
-                });
-            });
-
-            html += `</tr></thead><tbody class="divide-y divide-slate-100">`;
-
-            if (project.tasks.length === 0) {
-                html += `<tr><td colspan="${allWeeks.length + 1}" class="text-center py-8 text-slate-400">No tasks defined yet. Click "Add Task / Phase" to build the timeline.</td></tr>`;
-            } else {
-                project.tasks.forEach((task, idx) => {
-                    html += `<tr class="hover:bg-slate-50 transition">
-                        <td class="py-2.5 px-4 font-medium text-slate-800 border-r border-slate-200 sticky left-0 bg-white z-10 truncate max-w-[320px]" title="${task.name}">
-                            <div class="flex items-center gap-2">
-                                <span class="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-mono">${idx+1}</span>
-                                <span class="truncate">${task.name}</span>
-                            </div>
-                        </td>`;
-
-                    allWeeks.forEach(w => {
-                        // Check if week falls within task start and end
-                        let inRange = false;
-                        if (task.startWeek <= task.endWeek) {
-                            inRange = (w >= task.startWeek && w <= task.endWeek);
-                        } else {
-                            // Year wrap around
-                            inRange = (w >= task.startWeek || w <= task.endWeek);
-                        }
-
-                        let isStart = (w === task.startWeek);
-                        let isEnd = (w === task.endWeek);
-
-                        html += `<td class="py-2.5 px-0 text-center border-r border-slate-100 relative h-10">`;
-                        if (inRange) {
-                            let barClass = "bg-amber-500 h-6 my-auto absolute inset-x-0 mx-1 rounded-sm flex items-center justify-center text-[10px] text-white font-bold shadow-xs";
-                            if (isStart && task.milestones) {
-                                html += `<div class="${barClass}" title="${task.milestones}"><span class="truncate px-1">${task.milestones.split(',')[0]}</span></div>`;
-                            } else {
-                                html += `<div class="${barClass}"></div>`;
-                            }
-                        }
-                        html += `</td>`;
-                    });
-
-                    html += `</tr>`;
-                });
-            }
-
-            html += `</tbody></table>`;
-            container.innerHTML = html;
-        }
-
-        function renderTaskTable(project) {
-            const tbody = document.getElementById('taskTableBody');
-            tbody.innerHTML = '';
-
-            if (project.tasks.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-8 text-slate-400">No tasks found.</td></tr>`;
-                return;
-            }
-
-            project.tasks.forEach((task, idx) => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition";
-                tr.innerHTML = `
-                    <td class="py-3 px-4 font-mono text-slate-500 text-xs">${idx + 1}</td>
-                    <td class="py-3 px-4 font-medium text-slate-900">${task.name}</td>
-                    <td class="py-3 px-4 text-slate-600">Wk ${task.startWeek}</td>
-                    <td class="py-3 px-4 text-slate-600">Wk ${task.endWeek}</td>
-                    <td class="py-3 px-4"><span class="text-xs bg-amber-50 text-amber-800 px-2 py-1 rounded border border-amber-200">${task.milestones || 'No milestones'}</span></td>
-                    <td class="py-3 px-4 text-right space-x-2">
-                        <button onclick="editTask('${task.id}')" class="text-slate-500 hover:text-amber-600 p-1 transition"><i class="fa-solid fa-pen"></i></button>
-                        <button onclick="deleteTask('${task.id}')" class="text-slate-500 hover:text-red-600 p-1 transition"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        // Task Modal Functions
-        function openAddTaskModal() {
-            document.getElementById('taskModalTitle').textContent = 'Add New Task / Phase';
-            document.getElementById('taskForm').reset();
-            document.getElementById('editTaskId').value = '';
-            document.getElementById('taskModal').classList.remove('hidden');
-        }
-
-        function closeTaskModal() {
-            document.getElementById('taskModal').classList.add('hidden');
-        }
-
-        function editTask(taskId) {
-            const project = getCurrentProject();
-            const task = project.tasks.find(t => t.id === taskId);
-            if (!task) return;
-
-            document.getElementById('taskModalTitle').textContent = 'Edit Task / Phase';
-            document.getElementById('editTaskId').value = task.id;
-            document.getElementById('taskNameInput').value = task.name;
-            document.getElementById('taskStartInput').value = task.startWeek;
-            document.getElementById('taskEndInput').value = task.endWeek;
-            document.getElementById('taskMilestonesInput').value = task.milestones;
-            
-            document.getElementById('taskModal').classList.remove('hidden');
-        }
-
-        function saveTask(e) {
-            e.preventDefault();
-            const project = getCurrentProject();
-            const editId = document.getElementById('editTaskId').value;
-
-            const taskData = {
-                id: editId || 't_' + Date.now(),
-                name: document.getElementById('taskNameInput').value,
-                startWeek: parseInt(document.getElementById('taskStartInput').value),
-                endWeek: parseInt(document.getElementById('taskEndInput').value),
-                milestones: document.getElementById('taskMilestonesInput').value
-            };
-
-            if (editId) {
-                const idx = project.tasks.findIndex(t => t.id === editId);
-                if (idx !== -1) project.tasks[idx] = taskData;
-            } else {
-                project.tasks.push(taskData);
-            }
-
-            saveToStorage();
-            closeTaskModal();
-            renderDashboard();
-        }
-
-        function deleteTask(taskId) {
-            if (!confirm('Are you sure you want to delete this task?')) return;
-            const project = getCurrentProject();
-            project.tasks = project.tasks.filter(t => t.id !== taskId);
-            saveToStorage();
-            renderDashboard();
-        }
-
-        // Project Modal Functions
-        function openNewProjectModal() {
-            document.getElementById('projectModalTitle').textContent = 'Create New Project';
-            document.getElementById('projectForm').reset();
-            document.getElementById('editProjectIndex').value = '';
-            document.getElementById('projectModal').classList.remove('hidden');
-        }
-
-        function editCurrentProject() {
-            const project = getCurrentProject();
-            document.getElementById('projectModalTitle').textContent = 'Edit Project Details';
-            document.getElementById('editProjectIndex').value = project.id;
-            document.getElementById('projectNameInput').value = project.name;
-            document.getElementById('projectMetaInput').value = project.meta;
-            document.getElementById('projectModal').classList.remove('hidden');
-        }
-
-        function closeProjectModal() {
-            document.getElementById('projectModal').classList.add('hidden');
-        }
-
-        function saveProject(e) {
-            e.preventDefault();
-            const editId = document.getElementById('editProjectIndex').value;
-            const name = document.getElementById('projectNameInput').value;
-            const meta = document.getElementById('projectMetaInput').value;
-
-            if (editId) {
-                const p = projects.find(item => item.id === editId);
-                if (p) {
-                    p.name = name;
-                    p.meta = meta;
-                }
-            } else {
-                const newProj = {
-                    id: 'p_' + Date.now(),
-                    name: name,
-                    meta: meta,
-                    tasks: []
-                };
-                projects.push(newProj);
-                activeProjectId = newProj.id;
-            }
-
-            saveToStorage();
-            closeProjectModal();
-            renderProjectDropdown();
-            renderDashboard();
-        }
-
-        function deleteCurrentProject() {
-            if (projects.length <= 1) {
-                alert('You must keep at least one project.');
-                return;
-            }
-            if (!confirm('Are you sure you want to delete this entire project and its timeline?')) return;
-
-            projects = projects.filter(p => p.id !== activeProjectId);
-            activeProjectId = projects[0].id;
-            saveToStorage();
-            renderProjectDropdown();
-            renderDashboard();
-        }
-
-        // Backup Export / Import
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projects, null, 2));
-            const dlAnchor = document.createElement('a');
-            dlAnchor.setAttribute("href", dataStr);
-            dlAnchor.setAttribute("download", "martur_timeline_backup.json");
-            document.body.appendChild(dlAnchor);
-            dlAnchor.click();
-            dlAnchor.remove();
-        }
-
-        function importData(e) {
-            const fileReader = new FileReader();
-            if (e.target.files[0]) {
-                fileReader.readAsText(e.target.files[0], "UTF-8");
-                fileReader.onload = (event) => {
-                    try {
-                        const parsed = JSON.parse(event.target.result);
-                        if (Array.isArray(parsed) && parsed.length > 0) {
-                            projects = parsed;
-                            activeProjectId = projects[0].id;
-                            saveToStorage();
-                            renderProjectDropdown();
-                            renderDashboard();
-                            alert('Projects successfully imported!');
-                        } else {
-                            alert('Invalid backup file format.');
-                        }
-                    } catch (err) {
-                        alert('Error parsing JSON file.');
-                    }
-                };
-            }
-        }
-
-        // Initialize on load
-        window.onload = initApp;
-    </script>
+    init();
+  </script>
 </body>
 </html>

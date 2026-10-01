@@ -1,13 +1,10 @@
-# Martur Italy - Project Development Plan & Timeline Tracker
+# Martur Italy — Timeline Tracker
 
-This web application provides an interactive engineering milestone and timeline management dashboard designed for Martur Italy.
+Engineering schedule for the Torino plant. No install, no server.
 
-## Features
-- **Martur Italy Branding**: Official corporate header styling with Italian tricolor accent.
-- **Multi-Project Management**: Create, switch, edit, and delete multiple engineering projects.
-- **Interactive Gantt Matrix**: Week-by-week visual representation of development phases, trim orders, prototyping, and SOP milestones.
-- **Task & Timeline Editor**: Add, edit, and delete tasks with start week, end week, and milestone notes.
-- **Local Storage & Backup**: Automatic browser saving with JSON export and import backup support.
+Open `index.html` in Chrome, Edge, Firefox or Safari. Keep `logo.jpg` in the same folder.
 
-## How to Run
-Simply double-click `index.html` to open it in any modern web browser (Chrome, Firefox, Edge, Safari). No installation or server required!
+- Switch, create and edit projects
+- Master schedule across ISO weeks, September 2026 through September 2027
+- Phase register with milestones, status against today, and row order
+- Saved in this browser. Export or import a JSON backup before clearing site data
