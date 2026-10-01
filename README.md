@@ -1,9 +1,10 @@
-# Martur Italy — Zaman Çizelgesi
+# Martur Italy — Timeline
 
-Torino mühendislik planı. Kurulum yok.
+Engineering schedule for the Torino plant. No install.
 
-`index.html` dosyasını tarayıcıda açın. `logo.jpg` aynı klasörde kalsın.
+Open `index.html`. The Martur Italy mark is embedded in the page.
 
-- Zaman çizelgesi, görev listesi ve pano
-- ISO haftalar: Eylül 2026 – Eylül 2027, bugün çizgisi
-- Kayıt bu tarayıcıda durur. Dışa aktar / içe aktar ile JSON yedek alın
+- Timeline, task list and board
+- Drag a bar to move a phase; drag either end to extend or shorten it
+- ISO weeks, September 2026 through September 2027
+- Stored in this browser. Export or import a JSON backup
